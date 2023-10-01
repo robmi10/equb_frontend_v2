@@ -1,0 +1,107 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "equbAddress",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "EqubCreated",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_totalMembers",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_equbLength",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_collateralAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_contributionAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_durationOfEachPeriod",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_i_vrfcordinator",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_i_keyHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_i_subscriptionId",
+        "type": "uint64"
+      }
+    ],
+    "name": "createEqub",
+    "outputs": [
+      {
+        "internalType": "contract Equb",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "equbs",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getEqubs",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

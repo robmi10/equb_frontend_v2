@@ -1,5 +1,29 @@
-import '@/styles/globals.css'
+import "../styles/globals.css";
+import EqubProvider from "@/components/context/context";
+import { DAppProvider, Mumbai } from "@usedapp/core";
+import Home from "../components/home/home";
+import Navbar from "../components/navbar/navbar";
+import Layout from "../components/layout/layout";
+const config = {
+  networks: [Mumbai],
+  readOnlyChainId: 80001,
+  readOnlyUrls: {
+    [80001]: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_PROJECT_ID}`,
+  },
+};
 
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
-}
+const App = ({ Component, pageProps }) => {
+  return (
+    <>
+      <DAppProvider config={config}>
+        <EqubProvider>
+          <Layout>
+            <Navbar />
+            <Component {...pageProps} />
+          </Layout>
+        </EqubProvider>
+      </DAppProvider>
+    </>
+  );
+};
+export default App;

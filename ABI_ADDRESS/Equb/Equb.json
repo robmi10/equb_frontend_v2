@@ -1,0 +1,846 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_totalMembers",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_equbLength",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_collateralAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_contributionAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_durationOfEachPeriod",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_i_vrfcordinator",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_i_keyHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_i_subscriptionId",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "AlreadyExist",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "AlreadyFinished",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CycleDurationIsNotOver",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CycleIsFull",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "EqubNotFinished",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "EqubNotStarted",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoContribution",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoEligibleWinnerFound",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Nocollateral",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotEnoughMembers",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotJoinedCycle",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotOwner",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "have",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "want",
+        "type": "address"
+      }
+    ],
+    "name": "OnlyCoordinatorCanFulfill",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "PotToSmall",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ToManyPlayers",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "TxFailed",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_currentWeek",
+        "type": "uint256"
+      }
+    ],
+    "name": "AdvanceToNextCycle",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_amunt",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_totalsum",
+        "type": "uint256"
+      }
+    ],
+    "name": "ContributionMade",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_winner",
+        "type": "address"
+      }
+    ],
+    "name": "CycleWinner",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_currentWeek",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "bool",
+        "name": "_ended",
+        "type": "bool"
+      }
+    ],
+    "name": "EndEqub",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_timestamp",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      }
+    ],
+    "name": "EqubStarted",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_timestmamp",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_member",
+        "type": "address"
+      }
+    ],
+    "name": "MemberJoinedCycle",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_timestmamp",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_member",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_collateral",
+        "type": "uint256"
+      }
+    ],
+    "name": "MemberJoinedEqub",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_requestId",
+        "type": "uint256"
+      }
+    ],
+    "name": "RequestIdWinner",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "allMembers",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "name": "checkUpkeep",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "upkeepNeeded",
+        "type": "bool"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "collateralAmount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "contribute",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "contributionAmount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "currentWeekOrMonth",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "currentWinner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "cycleEnded",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "cycleParticipants",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "participant",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "participatedCycle",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "divDenominator",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "member",
+        "type": "address"
+      }
+    ],
+    "name": "doMemberExist",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "durationOfEachPeriod",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "endEqub",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "equbEnded",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "equbLength",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "equbStarted",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getCurrentWeekOrMonth",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_currentWeekOrMonth",
+        "type": "uint256"
+      }
+    ],
+    "name": "getCycleMemberInfo",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bool",
+            "name": "isplaying",
+            "type": "bool"
+          },
+          {
+            "internalType": "address",
+            "name": "member",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "hasWonBefore",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct Equb.CycleMemberInfo",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
+      }
+    ],
+    "name": "getCycleParticipants",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "participant",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "participatedCycle",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct Equb.CyclePartipants",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getCycleStatus",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bool",
+            "name": "isFinished",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "hasJoined",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalSum",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalCycleAmtPlayers",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "endTimeStamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "winner",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct Equb.CycleStatus",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getPlayerBalance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getPlayerRewardsAndPenalties",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "bool",
+            "name": "hasBeenRewarded",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "penalties",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "collateral",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "withheldAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "member",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "hasJoinedEqub",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct Equb.PlayerRewardsAndPenalties",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getWinner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "i_callbackGasLimit",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "i_numwords",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "i_requestConfirmations",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "joinEqub",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "joinEqubCycle",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "name": "performUpkeep",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "requestId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "randomWords",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "rawFulfillRandomWords",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "startEqub",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "timeStamp",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalMembers",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
