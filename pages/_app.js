@@ -4,6 +4,8 @@ import { DAppProvider, Mumbai } from "@usedapp/core";
 import Home from "../components/home/home";
 import Navbar from "../components/navbar/navbar";
 import Layout from "../components/layout/layout";
+import { ChakraProvider } from "@chakra-ui/react";
+
 const config = {
   networks: [Mumbai],
   readOnlyChainId: 80001,
@@ -15,14 +17,16 @@ const config = {
 const App = ({ Component, pageProps }) => {
   return (
     <>
-      <DAppProvider config={config}>
-        <EqubProvider>
-          <Layout>
-            <Navbar />
-            <Component {...pageProps} />
-          </Layout>
-        </EqubProvider>
-      </DAppProvider>
+      <ChakraProvider>
+        <DAppProvider config={config}>
+          <EqubProvider>
+            <Layout>
+              <Navbar />
+              <Component {...pageProps} />
+            </Layout>
+          </EqubProvider>
+        </DAppProvider>
+      </ChakraProvider>
     </>
   );
 };

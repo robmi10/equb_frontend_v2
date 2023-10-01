@@ -9,11 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.8.1",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@usedapp/core": "^1.2.13",
+    "framer-motion": "^10.16.4",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-icons": "^4.11.0"
+    "react-icons": "^4.11.0",
+    "styled-components": "^6.0.8",
+    "tailwind-merge": "^1.14.0",
+    "web3": "^4.1.2"
   },
   "devDependencies": {
     "autoprefixer": "latest",
