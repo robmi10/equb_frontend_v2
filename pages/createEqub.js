@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { EqubContext } from "../components/context/context";
 import { AiOutlineClose } from "react-icons/ai";
+import { HiOutlineStatusOnline } from "react-icons/hi";
+
 import webCreateEqub from "../components/web3/webCreateEqub";
 import BouncerLoader from "../components/animation/bouncer";
 import Toast from "../components/Toast/toaster";
@@ -171,7 +173,7 @@ const ModalContentChild = ({ setOpenModal }) => {
 };
 
 const CreateEqub = () => {
-  const { setOpenModal, toastNotification, setModalContent } =
+  const { setOpenModal, ownerEqubAddress, toastNotification, setModalContent } =
     useContext(EqubContext);
 
   const showModal = () => {
@@ -181,7 +183,10 @@ const CreateEqub = () => {
 
   useEffect(() => {
     console.log("Toast Notification Value: ", toastNotification);
-  });
+
+    console.log({ ownerEqubAddress });
+  }, [ownerEqubAddress]);
+  if (!ownerEqubAddress) return false;
 
   return (
     <div className="h-screen w-full p-20">
@@ -197,6 +202,30 @@ const CreateEqub = () => {
         >
           Create New Equb
         </button>
+
+        <span className="text-2xl">Equbs Awaiting Activation</span>
+        <div>
+          {ownerEqubAddress.map((option) => {
+            return (
+              <div className="pt-5 pb-5 gap-8">
+                <div className="w-full justify-between flex items-center">
+                  <span>
+                    <HiOutlineStatusOnline />
+                  </span>
+                  <span className="w-36">
+                    {option.equbAddress?.toString()?.substr(0, 15)}
+                  </span>
+                  <span className="w-36">
+                    {option.owner?.toString()?.substr(0, 15)}
+                  </span>
+                  <button className="border border-black rounded-md hover:bg-slate-100 w-2/12 p-2">
+                    START EQUB
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
       {toastNotification && (
         <Toast
