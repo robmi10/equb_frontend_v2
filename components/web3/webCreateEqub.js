@@ -7,7 +7,7 @@ import { Contract } from "@ethersproject/contracts";
 import { EQUB_FACTORY_ADDRESS } from "../../ABI_ADDRESS/address";
 import Web3 from "web3";
 
-const webCreateEqub = () => {
+const WebCreateEqub = () => {
   const { address, setLoader, setOpenModal, setToastNotifcation } =
     useContext(EqubContext);
   const equbFactoryInterface = new ethers.utils.Interface(equbFactoryInfo);
@@ -93,4 +93,4 @@ const webCreateEqub = () => {
   };
   return { useCreateEqubExecute };
 };
-export default webCreateEqub;
+export default WebCreateEqub;

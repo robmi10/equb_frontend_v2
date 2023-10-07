@@ -3,13 +3,66 @@ import { EqubContext } from "../components/context/context";
 import { AiOutlineClose } from "react-icons/ai";
 import { HiOutlineStatusOnline } from "react-icons/hi";
 
-import webCreateEqub from "../components/web3/webCreateEqub";
+import WebCreateEqub from "../components/web3/webCreateEqub";
 import BouncerLoader from "../components/animation/bouncer";
 import Toast from "../components/Toast/toaster";
+import WebStartEqub from "@/components/web3/webStartEqub";
+
+const ModalContent = ({ setOpenModal, address }) => {
+  const { useStartEqub } = WebStartEqub(address);
+  const { loader,toastNotification } = useContext(EqubContext);
+
+  const handleSubmit = () => {
+    event.preventDefault();
+    useStartEqub();
+  };
+
+  return (
+    <div className="bg-white w-5/12 h-4/12 flex justify-center p-11 mt-4 rounded-md flex-col gap-4">
+      <button onClick={() => setOpenModal(false)}>
+        <AiOutlineClose />
+      </button>
+      <div>
+        <div className="flex flex-col gap-1">
+      <p >Do you want to start the equb with address</p>
+      <p className=" font-bold">{address.toString().substr(0,14)}?</p>
+          </div>
+        </div> 
+      <div className="flex justify-between">
+      <button
+        className="border flex justify-center items-center border-black w-48 h-12 rounded-md hover:bg-slate-100"
+        onClick={() => {
+          setOpenModal(false);
+        }}
+        >
+        CANCEL
+      </button>
+      <button
+        className="border flex justify-center items-center border-black w-48 h-12 rounded-md hover:bg-slate-100"
+        onClick={() => {
+          handleSubmit();
+        }}
+        >
+        {" "}
+        {!loader ? "Confirm" : <BouncerLoader />}
+      </button>
+        </div>
+        {toastNotification && (
+        <Toast
+          title={`Equb started.`}
+          description={`Equb with ${address.toString().substr(0,14)} started.`}
+          status={"success"}
+          duration={4000}
+          isClosable={true}
+        />
+      )}
+    </div>
+  );
+};
 
 const ModalContentChild = ({ setOpenModal }) => {
   const { loader } = useContext(EqubContext);
-  const { useCreateEqubExecute } = webCreateEqub();
+  const { useCreateEqubExecute } = WebCreateEqub();
 
   const [formInput, setformInput] = useState({
     totalMembers: "",
@@ -181,6 +234,13 @@ const CreateEqub = () => {
     setModalContent(<ModalContentChild setOpenModal={setOpenModal} />);
   };
 
+  const handleStartClick = (address) => {
+    setOpenModal(true);
+    setModalContent(
+      <ModalContent setOpenModal={setOpenModal} address={address} />
+    );
+  };
+
   useEffect(() => {
     console.log("Toast Notification Value: ", toastNotification);
 
@@ -205,10 +265,10 @@ const CreateEqub = () => {
 
         <span className="text-2xl">Equbs Awaiting Activation</span>
         <div>
-          {ownerEqubAddress.map((option) => {
+          {ownerEqubAddress.map((option, index) => {
             return (
               <div className="pt-5 pb-5 gap-8">
-                <div className="w-full justify-between flex items-center">
+                <div key={index} className="w-full justify-between flex items-center">
                   <span>
                     <HiOutlineStatusOnline />
                   </span>
@@ -218,7 +278,12 @@ const CreateEqub = () => {
                   <span className="w-36">
                     {option.owner?.toString()?.substr(0, 15)}
                   </span>
-                  <button className="border border-black rounded-md hover:bg-slate-100 w-2/12 p-2">
+                  <button
+                    onClick={() => {
+                      handleStartClick(option.equbAddress);
+                    }}
+                    className="border border-black rounded-md hover:bg-slate-100 w-2/12 p-2"
+                  >
                     START EQUB
                   </button>
                 </div>

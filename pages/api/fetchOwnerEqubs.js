@@ -1,7 +1,16 @@
 const FetchOwners = async (req, res) => {
   try {
     const ownerAddress = req.body.ownerAddress;
-    console.log({ ownerAddressCheck: ownerAddress });
+    const QUERY = `
+      query GetEqubCreateds($owner: String!) {
+        equbCreateds(where: { owner: $owner }) {
+          id
+          equbAddress
+          blockNumber
+          owner
+        }
+      }
+    `;
     const response = await fetch(
       "https://api.studio.thegraph.com/query/47164/equbv2/v0.0.1",
       {
@@ -11,25 +20,15 @@ const FetchOwners = async (req, res) => {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          query: ` {
-            equbCreateds(
-              where: {owner: "0x62d95f19dd724d0c0203d046a8ed7090d01fed1b"}
-            ) {
-              id
-              equbAddress
-              blockNumber
-              owner
-            }
-          }`,
+          query: QUERY,
           variables: {
-            ownerAddress: ownerAddress,
+            owner: ownerAddress,
           },
         }),
       }
     );
 
     const result = await response.json();
-    console.log({ resCheck: res });
     res.status(200).send({ message: "success", data: result });
   } catch (error) {
     res.status(500).send({ message: "error", data: error.message });

@@ -7,7 +7,6 @@ export const EqubContext = createContext();
 
 const EqubProvider = ({ children }) => {
   const { account } = useEthers();
-
   const [address, setAddress] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [modalContent, setModalContent] = useState(false);

@@ -17,6 +17,7 @@
     "framer-motion": "^10.16.4",
     "graphql": "^16.8.1",
     "next": "latest",
+    "node": "^20.7.0",
     "react": "latest",
     "react-dom": "latest",
     "react-icons": "^4.11.0",
