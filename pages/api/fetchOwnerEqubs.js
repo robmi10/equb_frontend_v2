@@ -3,16 +3,17 @@ const FetchOwners = async (req, res) => {
     const ownerAddress = req.body.ownerAddress;
     const QUERY = `
       query GetEqubCreateds($owner: String!) {
-        equbCreateds(where: { owner: $owner }) {
+        equbs(where: { owner: $owner }) {
           id
           equbAddress
-          blockNumber
           owner
+          equbStarted
+          totalMembers
         }
       }
     `;
     const response = await fetch(
-      "https://api.studio.thegraph.com/query/47164/equbv2/v0.0.1",
+      "http://127.0.0.1:8000/subgraphs/name/equb2",
       {
         method: "POST",
         headers: {

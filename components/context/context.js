@@ -22,13 +22,12 @@ const EqubProvider = ({ children }) => {
   useEffect(() => {}, [openModal, modalContent, toastNotification]);
 
   //Fetch all equbs from owner
-
   useEffect(() => {
     if (account && !ownerEqubAddress) {
       console.log("run getOwnerEqbus");
       getOwnerEqbus(account);
     }
-  }, [account, ownerEqubAddress]);
+  }, [account, ownerEqubAddress, loader]);
 
   const getOwnerEqbus = async () => {
     try {
@@ -44,8 +43,8 @@ const EqubProvider = ({ children }) => {
         .then((res) => res.json())
         .then((result) => {
           const { data } = result.data;
-          console.log({ resultCheckNow: data?.equbCreateds });
-          setOwnerEqubAddress(data?.equbCreateds);
+          console.log({ resultCheckNow: data?.equbs });
+          setOwnerEqubAddress(data?.equbs);
 
           console.log({ ownerEqubAddress });
         });

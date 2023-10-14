@@ -40,6 +40,11 @@
         "internalType": "uint64",
         "name": "_i_subscriptionId",
         "type": "uint64"
+      },
+      {
+        "internalType": "address",
+        "name": "admin",
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -142,7 +147,7 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "_currentWeek",
+        "name": "_cycleIndex",
         "type": "uint256"
       }
     ],
@@ -155,20 +160,32 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "_amunt",
+        "name": "_participantsCount",
         "type": "uint256"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_user",
+        "name": "_participant",
         "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_totalsum",
+        "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_totalsum",
+        "name": "_amunt",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "_participatedCycle",
+        "type": "bool"
       }
     ],
     "name": "ContributionMade",
@@ -182,6 +199,18 @@
         "internalType": "address",
         "name": "_winner",
         "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_cycleIndex",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "bool",
+        "name": "_isFinished",
+        "type": "bool"
       }
     ],
     "name": "CycleWinner",
@@ -212,14 +241,87 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "_timestamp",
+        "name": "totalMembers",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "equbLength",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "collateralAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "contributionAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "durationOfEachPeriod",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "address",
+        "name": "vrfCoordinator",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "keyHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "subscriptionId",
+        "type": "uint64"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "equbAddress",
+        "type": "address"
+      }
+    ],
+    "name": "EqubCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_timestamp",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "_owner",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "_hasStarted",
+        "type": "bool"
       }
     ],
     "name": "EqubStarted",
@@ -236,9 +338,27 @@
       },
       {
         "indexed": true,
+        "internalType": "uint256",
+        "name": "_cycleIndex",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
         "internalType": "address",
         "name": "_member",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "_isplaying",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_totalCycleAmtPlayers",
+        "type": "uint256"
       }
     ],
     "name": "MemberJoinedCycle",
@@ -260,10 +380,22 @@
         "type": "address"
       },
       {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_cycleIndex",
+        "type": "uint256"
+      },
+      {
         "indexed": false,
         "internalType": "uint256",
         "name": "_collateral",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "_hasJoinedEqub",
+        "type": "bool"
       }
     ],
     "name": "MemberJoinedEqub",
@@ -274,8 +406,77 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "address",
+        "name": "member",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "payoutAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "MemberPayout",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "member",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "penalties",
+        "type": "uint256"
+      }
+    ],
+    "name": "PenalizedMember",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "winner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "bool",
+        "name": "hasBeenRewarded",
+        "type": "bool"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "withheldAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "PlayerRewarded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "uint256",
         "name": "_requestId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_cycleIndex",
         "type": "uint256"
       }
     ],
@@ -476,6 +677,19 @@
     "name": "endEqub",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "equbAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {

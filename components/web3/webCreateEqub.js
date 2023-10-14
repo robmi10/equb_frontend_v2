@@ -8,8 +8,9 @@ import { EQUB_FACTORY_ADDRESS } from "../../ABI_ADDRESS/address";
 import Web3 from "web3";
 
 const WebCreateEqub = () => {
-  const { address, setLoader, setOpenModal, setToastNotifcation } =
+  const { loader, setLoader, setOpenModal, setToastNotifcation } =
     useContext(EqubContext);
+    const {  account } = useEthers();
   const equbFactoryInterface = new ethers.utils.Interface(equbFactoryInfo);
 
   const equbFactoryAddressContract = new Contract(
@@ -24,11 +25,11 @@ const WebCreateEqub = () => {
   } = useContractFunction(equbFactoryAddressContract, "createEqub");
 
   useEffect(() => {
-    if (createEqubStatus.status === "Mining") {
+    if (createEqubStatus.status === "Mining" && !loader) {
       setLoader(true);
       console.log("inside MINING");
     }
-    if (createEqubStatus.status === "Success") {
+    if (createEqubStatus.status === "Success" && loader) {
       setLoader(false);
       setOpenModal(false);
       setToastNotifcation(true);
@@ -80,6 +81,7 @@ const WebCreateEqub = () => {
         break;
     }
 
+    console.log({account})
     createEqubExecute(
       totalMembers,
       length,
@@ -88,7 +90,8 @@ const WebCreateEqub = () => {
       timestamp,
       vrfcoordinator,
       keyhash,
-      subscriptionid
+      subscriptionid,
+      account
     );
   };
   return { useCreateEqubExecute };

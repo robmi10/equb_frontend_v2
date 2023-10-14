@@ -4,18 +4,66 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "address",
-        "name": "equbAddress",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "totalMembers",
+        "type": "uint256"
       },
       {
         "indexed": true,
+        "internalType": "uint256",
+        "name": "equbLength",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "collateralAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "contributionAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "durationOfEachPeriod",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "vrfCoordinator",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "keyHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "subscriptionId",
+        "type": "uint64"
+      },
+      {
+        "indexed": false,
         "internalType": "address",
         "name": "owner",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "equbAddress",
+        "type": "address"
       }
     ],
-    "name": "EqubCreated",
+    "name": "EqubInstanceCreated",
     "type": "event"
   },
   {
@@ -59,12 +107,17 @@
         "internalType": "uint64",
         "name": "_i_subscriptionId",
         "type": "uint64"
+      },
+      {
+        "internalType": "address",
+        "name": "admin",
+        "type": "address"
       }
     ],
     "name": "createEqub",
     "outputs": [
       {
-        "internalType": "contract Equb",
+        "internalType": "address",
         "name": "",
         "type": "address"
       }

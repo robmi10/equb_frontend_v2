@@ -246,7 +246,7 @@ const CreateEqub = () => {
 
     console.log({ ownerEqubAddress });
   }, [ownerEqubAddress]);
-  if (!ownerEqubAddress) return false;
+  // const isOwnerEqubAddressesInListBiggerThenZero = ownerEqubAddress.length > 0
 
   return (
     <div className="h-screen w-full p-20">
@@ -263,8 +263,9 @@ const CreateEqub = () => {
           Create New Equb
         </button>
 
-        <span className="text-2xl">Equbs Awaiting Activation</span>
-        <div>
+      {ownerEqubAddress &&  <div>
+        {ownerEqubAddress.length > 0 && <span className="text-2xl">Equbs Awaiting Activation</span>}
+
           {ownerEqubAddress.map((option, index) => {
             return (
               <div className="pt-5 pb-5 gap-8">
@@ -290,7 +291,7 @@ const CreateEqub = () => {
               </div>
             );
           })}
-        </div>
+        </div>}
       </div>
       {toastNotification && (
         <Toast

@@ -9,6 +9,7 @@ const WebStartEqub = (EQUB_ADDRES) => {
   const { address, setLoader, setOpenModal, setToastNotifcation } =
     useContext(EqubContext);
 
+  console.log({EQUB_ADDRES})
   const equbFactoryInterface = new ethers.utils.Interface(equbInfo);
 
   const equbAddressContract = new Contract(EQUB_ADDRES, equbFactoryInterface);
