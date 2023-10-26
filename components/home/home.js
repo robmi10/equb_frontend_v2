@@ -7,12 +7,15 @@ const Home = () => {
       <div className="w-screen h-screen">
         <div className="w-full h-full flex items-center mt-48 flex-col space-y-16">
           <div className=" flex flex-col space-y-5 items-center w-2/4 border-black-10 hover:bg-slate-50 border rounded-lg p-4 mb-16">
-            <span className="font-bold text-5xl">Welcome to Equb</span>
+            <span className="font-bold text-2xl">WELCOME TO EQUB</span>
             <span className="font-medium text-2xl">
-              Your Digital Savings Circle
+            YOUR DIGITAL SAVINGS CIRCLE
             </span>
             <span className=" font-medium  ">
-              Dive into a modern way of managing shared financial goals.
+            DIVE INTO A MODERN WAY OF
+            </span>
+            <span className=" font-medium  ">
+            MANAGING SHARED FINANCIAL GOALS.
             </span>
           </div>
           <div className="space-x-8 w-4/4">

@@ -1,22 +1,22 @@
 import React, { useContext } from "react";
-import { BiSolidUser } from "react-icons/bi";
 import { AiFillHome } from "react-icons/ai";
+import { HiMiniUserGroup } from "react-icons/hi2";
+
 import Link from "next/link";
-import { EqubContext } from "../context/context";
 import { useEthers } from "@usedapp/core";
 
 const Navbar = () => {
   const { activateBrowserWallet, deactivate, account } = useEthers();
   return (
-    <div className="w-screen  justify-around flex h-16 border-b border-black items-center">
+    <div className="w-3/5 justify-around flex h-16 border-black items-center">
       <Link className="w-32" href="/">
-        <AiFillHome />
+        <HiMiniUserGroup />
       </Link>
-      <Link className="w-32" href="/">
-        Explore Equbs
+      <Link className="w-32" href="/exploreEqubs">
+        EXPLORE EQUBS
       </Link>
-      <Link className="w-32" href="/">
-        My Equbs
+      <Link className="w-32" href="/myEqubs">
+        MY EQUBS
       </Link>
 
       {!account ? (

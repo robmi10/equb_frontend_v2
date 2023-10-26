@@ -21,7 +21,9 @@ const App = ({ Component, pageProps }) => {
         <DAppProvider config={config}>
           <EqubProvider>
             <Layout>
+              <div className="flex justify-center">
               <Navbar />
+              </div>
               <Component {...pageProps} />
             </Layout>
           </EqubProvider>

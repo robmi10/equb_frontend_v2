@@ -249,8 +249,8 @@ const CreateEqub = () => {
   // const isOwnerEqubAddressesInListBiggerThenZero = ownerEqubAddress.length > 0
 
   return (
-    <div className="h-screen w-full p-20">
-      <div className="w-full h-full flex flex-col space-y-10 p-20">
+    <div className="h-screen w-full p-10">
+      <div className="w-full h-full flex flex-col space-y-10 p-10">
         <span className=" text-4xl font-semibold"> Start Your Own Equb</span>
         <span className="text-2xl font-medium">
           Creating an equb is straightforward. Set your terms, invite members,
@@ -268,8 +268,8 @@ const CreateEqub = () => {
 
           {ownerEqubAddress.map((option, index) => {
             return (
-              <div className="pt-5 pb-5 gap-8">
-                <div key={index} className="w-full justify-between flex items-center">
+              <div className="pt-2 pb-5 gap-8">
+                {!option.equbStarted && <div key={index} className="w-full justify-between flex items-center">
                   <span>
                     <HiOutlineStatusOnline />
                   </span>
@@ -287,20 +287,20 @@ const CreateEqub = () => {
                   >
                     START EQUB
                   </button>
-                </div>
+                </div>}
               </div>
             );
           })}
         </div>}
       </div>
       {toastNotification && (
-        <Toast
-          title={"Equb created."}
-          description={`New Equb is created.`}
-          status={"success"}
-          duration={4000}
-          isClosable={true}
-        />
+          <Toast
+            title={"Equb created."}
+            description={`New Equb is created.`}
+            status={"success"}
+            duration={4000}
+            isClosable={true}
+          />
       )}
     </div>
   );

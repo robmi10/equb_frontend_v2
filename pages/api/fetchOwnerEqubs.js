@@ -9,6 +9,11 @@ const FetchOwners = async (req, res) => {
           owner
           equbStarted
           totalMembers
+          equbEnded
+          equbLength
+          contributionAmount
+          collateralAmount
+          durationOfEachPeriod
         }
       }
     `;

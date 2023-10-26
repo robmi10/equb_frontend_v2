@@ -21,7 +21,6 @@ const EqubProvider = ({ children }) => {
 
   useEffect(() => {}, [openModal, modalContent, toastNotification]);
 
-  //Fetch all equbs from owner
   useEffect(() => {
     if (account && !ownerEqubAddress) {
       console.log("run getOwnerEqbus");
