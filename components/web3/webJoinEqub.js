@@ -32,8 +32,9 @@ const WebJoinEqub = (EQUB_ADDRES) => {
     }
   });
 
-  const useJoinEqub = async () => {
-    joinEqubExecute();
+  const useJoinEqub = async (amountInEther) => {
+   
+    joinEqubExecute({ value: amountInEther });
   };
   return { useJoinEqub };
 };

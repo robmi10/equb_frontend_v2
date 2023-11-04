@@ -1,20 +1,42 @@
 import { EqubContext } from '@/components/context/context';
 import Link from 'next/link';
 import React, { useContext } from 'react'
+import { useQuery } from '@apollo/client';
+import { GET_OWNER_EQUBS, GET_JOINED_EQUBS } from '@/components/apollo';
+import { useEthers, useContractFunction } from "@usedapp/core";
 
 const MyEqubs = () => {
-  const { setOpenModal, ownerEqubAddress, toastNotification, setModalContent } =
-    useContext(EqubContext);
+  const {   allEqubs  } =
+    useContext(EqubContext)
+    const {  account } = useEthers();
 
+    if(!account) return false
+    console.log({account})
+    const {  data: myEqubs, loading: myEqubsLoading, error: myEqubsError } = useQuery(GET_OWNER_EQUBS, {
+      variables: { owner: account },
+    });
+    const {  data: joinedEqubs, loading: joinedEqubsLoading, error: joinedEqubsError } = useQuery(GET_JOINED_EQUBS, {
+      variables: { equb: account },
+    });
+
+     if(myEqubsError || joinedEqubsError) return <> <p> Error...</p></>
+
+     if(joinedEqubsLoading || myEqubsLoading) return <> <p> Loading...</p></>
+
+     const {equbs: myEqubList} = myEqubs
+     const {equbs: joinedEqubList} = joinedEqubs
+
+    console.log({myEqubs})
+    console.log({joinedEqubList})
   return (
     <div className="h-screen w-full p-10">
       <div className="w-full h-full flex flex-col space-y-10 p-10">
         <span className=" text-4xl font-semibold"> MyEqub Dashboard</span>
         <span className="text-2xl font-medium">
         Welcome to your personal equb dashboard. Here you can monitor and manage the equbs you own and see the ones you've joined.        </span>
-        {ownerEqubAddress.length > 0 && <span className="text-2xl">🏠 My Owned Equbs</span>}
-        {ownerEqubAddress &&  <div className="border rounded-md p-4">
-          {ownerEqubAddress.map((option, index) => {
+        {myEqubList.length > 0 && <span className="text-2xl">🏠 My Owned Equbs</span>}
+        {myEqubList.length > 0 &&  <div className="border rounded-md p-4">
+          {myEqubList.map((option, index) => {
             return (
               <div className="gap-8">
                 {option.equbStarted && <div key={index}>
@@ -88,9 +110,9 @@ const MyEqubs = () => {
           })}
         </div>}
 
-        {ownerEqubAddress.length > 0 && <span className="text-2xl">🤝 Equbs I've Joined</span>}
-        {ownerEqubAddress &&  <div className="border rounded-md p-4">
-        {ownerEqubAddress.map((option, index) => {
+        {joinedEqubList.length > 0 && <span className="text-2xl">🤝 Equbs I've Joined</span>}
+        {joinedEqubList.length > 0 &&  <div className="border rounded-md p-4">
+        {joinedEqubList.map((option, index) => {
             return (
               <div className="gap-8">
                 {option.equbStarted && <div key={index}>

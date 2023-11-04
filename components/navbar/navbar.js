@@ -1,14 +1,13 @@
-import React, { useContext } from "react";
-import { AiFillHome } from "react-icons/ai";
-import { HiMiniUserGroup } from "react-icons/hi2";
+import React from 'react';
+import { HiMiniUserGroup } from 'react-icons/hi2';
 
-import Link from "next/link";
-import { useEthers } from "@usedapp/core";
+import Link from 'next/link';
+import { useEthers } from '@usedapp/core';
 
 const Navbar = () => {
   const { activateBrowserWallet, deactivate, account } = useEthers();
   return (
-    <div className="w-3/5 justify-around flex h-16 border-black items-center">
+    <div className="w-3/4 justify-between pl-10 flex h-16 border-black items-center ">
       <Link className="w-32" href="/">
         <HiMiniUserGroup />
       </Link>

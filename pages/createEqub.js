@@ -7,10 +7,13 @@ import WebCreateEqub from "../components/web3/webCreateEqub";
 import BouncerLoader from "../components/animation/bouncer";
 import Toast from "../components/Toast/toaster";
 import WebStartEqub from "@/components/web3/webStartEqub";
+import { useEthers } from "@usedapp/core";
+import { GET_MY_INACTIVATED_EQUBS } from "@/components/apollo";
+import { useQuery } from "@apollo/client";
 
 const ModalContent = ({ setOpenModal, address }) => {
   const { useStartEqub } = WebStartEqub(address);
-  const { loader,toastNotification } = useContext(EqubContext);
+  const { loader, toastNotification } = useContext(EqubContext);
 
   const handleSubmit = () => {
     event.preventDefault();
@@ -24,33 +27,33 @@ const ModalContent = ({ setOpenModal, address }) => {
       </button>
       <div>
         <div className="flex flex-col gap-1">
-      <p >Do you want to start the equb with address</p>
-      <p className=" font-bold">{address.toString().substr(0,14)}?</p>
-          </div>
-        </div> 
-      <div className="flex justify-between">
-      <button
-        className="border flex justify-center items-center border-black w-48 h-12 rounded-md hover:bg-slate-100"
-        onClick={() => {
-          setOpenModal(false);
-        }}
-        >
-        CANCEL
-      </button>
-      <button
-        className="border flex justify-center items-center border-black w-48 h-12 rounded-md hover:bg-slate-100"
-        onClick={() => {
-          handleSubmit();
-        }}
-        >
-        {" "}
-        {!loader ? "Confirm" : <BouncerLoader />}
-      </button>
+          <p >Do you want to start the equb with address</p>
+          <p className=" font-bold">{address.toString().substr(0, 14)}?</p>
         </div>
-        {toastNotification && (
+      </div>
+      <div className="flex justify-between">
+        <button
+          className="border flex justify-center items-center border-black w-48 h-12 rounded-md hover:bg-slate-100"
+          onClick={() => {
+            setOpenModal(false);
+          }}
+        >
+          CANCEL
+        </button>
+        <button
+          className="border flex justify-center items-center border-black w-48 h-12 rounded-md hover:bg-slate-100"
+          onClick={() => {
+            handleSubmit();
+          }}
+        >
+          {" "}
+          {!loader ? "Confirm" : <BouncerLoader />}
+        </button>
+      </div>
+      {toastNotification && (
         <Toast
           title={`Equb started.`}
-          description={`Equb with ${address.toString().substr(0,14)} started.`}
+          description={`Equb with ${address.toString().substr(0, 14)} started.`}
           status={"success"}
           duration={4000}
           isClosable={true}
@@ -63,6 +66,7 @@ const ModalContent = ({ setOpenModal, address }) => {
 const ModalContentChild = ({ setOpenModal }) => {
   const { loader } = useContext(EqubContext);
   const { useCreateEqubExecute } = WebCreateEqub();
+
 
   const [formInput, setformInput] = useState({
     totalMembers: "",
@@ -144,7 +148,7 @@ const ModalContentChild = ({ setOpenModal }) => {
             id="collateral"
             name="collateral"
             className="mt-1 p-2 w-full border rounded-md"
-            placeholder="Enter the length of the equb (e.g., in days)"
+            placeholder="Enter the contribution amount for each member (e.g., in ETH)"
             value={formInput.collateral}
             onChange={handleChange}
           />
@@ -180,7 +184,7 @@ const ModalContentChild = ({ setOpenModal }) => {
             id="duration"
             name="duration"
             className="mt-1 p-2 w-full border rounded-md"
-            placeholder="Enter duration for each period (e.g., in days-weeks-months)"
+            placeholder="Enter duration for each period (e.g., in days-weeks)"
             value={formInput.duration}
             onChange={handleChange}
           />
@@ -192,7 +196,6 @@ const ModalContentChild = ({ setOpenModal }) => {
           >
             <option value="days">Days</option>
             <option value="weeks">Weeks</option>
-            <option value="months">Months</option>
           </select>
         </div>
 
@@ -228,6 +231,21 @@ const ModalContentChild = ({ setOpenModal }) => {
 const CreateEqub = () => {
   const { setOpenModal, ownerEqubAddress, toastNotification, setModalContent } =
     useContext(EqubContext);
+  const { account } = useEthers();
+
+  const { data: myActiveEqubsQuery, loading: myActiveEqubsQueryLoading, error: myActiveEqubsQueryError } = useQuery(GET_MY_INACTIVATED_EQUBS, {
+    variables: { owner: account, equbStarted: false },
+  });
+
+  console.log({ myActiveEqubsQuery })
+  console.log({ myActiveEqubsQueryError })
+  console.log({ myActiveEqubsQueryLoading })
+  if (myActiveEqubsQueryError) return <> <p> Error...</p></>
+
+  if (myActiveEqubsQueryLoading) return <> <p> Loading...</p></>
+
+  const { equbs: myActiveEqubList } = myActiveEqubsQuery
+
 
   const showModal = () => {
     setOpenModal(true);
@@ -241,34 +259,28 @@ const CreateEqub = () => {
     );
   };
 
-  useEffect(() => {
-    console.log("Toast Notification Value: ", toastNotification);
-
-    console.log({ ownerEqubAddress });
-  }, [ownerEqubAddress]);
-  // const isOwnerEqubAddressesInListBiggerThenZero = ownerEqubAddress.length > 0
 
   return (
-    <div className="h-screen w-full p-10">
-      <div className="w-full h-full flex flex-col space-y-10 p-10">
-        <span className=" text-4xl font-semibold"> Start Your Own Equb</span>
-        <span className="text-2xl font-medium">
+    <div className="h-screen w-full flex justify-center">
+      <div className="w-3/4 h-full flex flex-col space-y-10 p-10">
+        <span className="font-bold text-5xl">Start Your Own Equb</span>
+        <span className="font-medium text-2xl text-gray-400">
           Creating an equb is straightforward. Set your terms, invite members,
           and manage your savings collaboratively.
         </span>
         <button
           onClick={showModal}
-          className=" border border-black w-2/12 p-5 rounded-md hover:bg-slate-100"
+          className=" border border-black w-4/12 p-5 rounded-md hover:bg-slate-100"
         >
           Create New Equb
         </button>
 
-      {ownerEqubAddress &&  <div>
-        {ownerEqubAddress.length > 0 && <span className="text-2xl">Equbs Awaiting Activation</span>}
+        {myActiveEqubList && <div>
+          {myActiveEqubList.length > 0 && <span className="text-xl">Equbs Awaiting Activation</span>}
 
-          {ownerEqubAddress.map((option, index) => {
+          {myActiveEqubList.map((option, index) => {
             return (
-              <div className="pt-2 pb-5 gap-8">
+              <div className="pt-2 flex gap-24 bg-red-300">
                 {!option.equbStarted && <div key={index} className="w-full justify-between flex items-center">
                   <span>
                     <HiOutlineStatusOnline />
@@ -294,13 +306,13 @@ const CreateEqub = () => {
         </div>}
       </div>
       {toastNotification && (
-          <Toast
-            title={"Equb created."}
-            description={`New Equb is created.`}
-            status={"success"}
-            duration={4000}
-            isClosable={true}
-          />
+        <Toast
+          title={"Equb created."}
+          description={`New Equb is created.`}
+          status={"success"}
+          duration={4000}
+          isClosable={true}
+        />
       )}
     </div>
   );

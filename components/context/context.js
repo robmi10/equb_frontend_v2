@@ -14,42 +14,11 @@ const EqubProvider = ({ children }) => {
   const [loader, setLoader] = useState(false);
   const [toastNotification, setToastNotifcation] = useState(false);
   const [ownerEqubAddress, setOwnerEqubAddress] = useState(false);
+  const [allEqubs, setAllEqubs] = useState(false);
+  const [joinedEqubs, setJoinedEqubs] = useState(false);
 
   const closeModal = () => {
     setOpenModal(false);
-  };
-
-  useEffect(() => {}, [openModal, modalContent, toastNotification]);
-
-  useEffect(() => {
-    if (account && !ownerEqubAddress) {
-      console.log("run getOwnerEqbus");
-      getOwnerEqbus(account);
-    }
-  }, [account, ownerEqubAddress, loader]);
-
-  const getOwnerEqbus = async () => {
-    try {
-      await fetch("api/fetchOwnerEqubs", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ownerAddress: account,
-        }),
-      })
-        .then((res) => res.json())
-        .then((result) => {
-          const { data } = result.data;
-          console.log({ resultCheckNow: data?.equbs });
-          setOwnerEqubAddress(data?.equbs);
-
-          console.log({ ownerEqubAddress });
-        });
-    } catch (error) {
-      console.error({ error });
-    }
   };
 
   const modalClass = twMerge(
@@ -74,6 +43,7 @@ const EqubProvider = ({ children }) => {
         setToastNotifcation,
         ownerEqubAddress,
         setOwnerEqubAddress,
+        allEqubs, setAllEqubs
       }}
     >
       {children}

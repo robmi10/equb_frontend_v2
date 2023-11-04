@@ -10,8 +10,9 @@ import Web3 from "web3";
 const WebCreateEqub = () => {
   const { loader, setLoader, setOpenModal, setToastNotifcation } =
     useContext(EqubContext);
-    const {  account } = useEthers();
+  const { account } = useEthers();
   const equbFactoryInterface = new ethers.utils.Interface(equbFactoryInfo);
+
 
   const equbFactoryAddressContract = new Contract(
     EQUB_FACTORY_ADDRESS,
@@ -49,45 +50,39 @@ const WebCreateEqub = () => {
       subscriptionid,
     } = formInput;
 
+    const secondsPerDay = 86400; // 24 hours * 60 minutes * 60 seconds
+    const secondsPerWeek = 604800; // 7 days * 24 hours * 60 minutes * 60 seconds
+    let durationInSeconds;
+
     let _collateral = Web3.utils.toWei(collateral, "ether");
     let _amount = Web3.utils.toWei(amount, "ether");
-
-    let startDate = new Date(); // Current date
-    let endDate = new Date(startDate);
-    let timestamp = Math.floor(endDate.getTime() / 1000);
-    console.log({ _collateral });
-    console.log({ endDate });
-    console.log({ timestamp });
 
     let vrfcoordinator = "0x7a1bac17ccc5b313516c5e16fb24f7659aa5ebed";
     let keyhash =
       "0x4b09e658ed251bcafeebbc69400383d49f344ace09b9576fe248bb02c003fe9f";
-
-    console.log({ vrfcoordinator });
-    console.log({ keyhash });
+    const equbEndTimestamp = length * secondsPerWeek
 
     switch (durationType) {
       case "days":
-        endDate.setDate(startDate.getDate() + parseInt(duration));
+        durationInSeconds = duration * secondsPerDay;
         break;
       case "weeks":
-        endDate.setDate(startDate.getDate() + 7 * parseInt(duration));
-        break;
-      case "months":
-        endDate.setMonth(startDate.getMonth() + parseInt(duration));
+        durationInSeconds = duration * secondsPerWeek;
         break;
       default:
         console.error("Invalid duration type");
         break;
     }
 
-    console.log({account})
+    console.log({ account })
+    console.log({ durationInSeconds })
+    console.log({ equbEndTimestamp })
     createEqubExecute(
       totalMembers,
-      length,
+      equbEndTimestamp,
       _collateral,
       _amount,
-      timestamp,
+      durationInSeconds,
       vrfcoordinator,
       keyhash,
       subscriptionid,

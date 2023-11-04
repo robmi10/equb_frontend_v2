@@ -1,14 +1,21 @@
+import { GET_EQUBS_INFO } from '@/components/apollo';
 import { EqubContext } from '@/components/context/context';
+import WebJoinEqub from '@/components/web3/webJoinEqub';
+import { useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
 import React, { useContext } from 'react'
+import { AiOutlineClose } from 'react-icons/ai';
 
-const ModalContent = ({ setOpenModal, address }) => {
-  const { useJoinEqub } = WebJoinEqub(address);
+const ModalContent = ({ setOpenModal, props }) => {
+  const { collateralAmount, equbAddress } = props
+ 
+  const { useJoinEqub } = WebJoinEqub(equbAddress);
   const { loader,toastNotification } = useContext(EqubContext);
-
-  const handleSubmit = () => {
-    event.preventDefault();
-    // useJoinEqub();
-  };
+        
+        const handleSubmit = () => {
+          event.preventDefault();
+          useJoinEqub(collateralAmount);
+        };
 
   return (
     <div className="bg-white w-5/12 h-4/12 flex justify-center p-11 mt-4 rounded-md flex-col gap-4">
@@ -18,7 +25,7 @@ const ModalContent = ({ setOpenModal, address }) => {
       <div>
         <div className="flex flex-col gap-1">
       <p >Do you want to join the equb with address</p>
-      <p className=" font-bold">{address.toString().substr(0,14)}?</p>
+      <p className=" font-bold">{equbAddress?.toString().substr(0,14)}?</p>
           </div>
         </div> 
       <div className="flex justify-between">
@@ -57,10 +64,28 @@ const Equb = () => {
     const { setOpenModal, ownerEqubAddress, toastNotification, setModalContent } =
     useContext(EqubContext);
 
-    const handleStartClick = (address) => {
+    const router = useRouter();
+    const EqubParam = router.query.equbaddress
+  
+  console.log("EqubParam ->", EqubParam)
+  
+  
+    const {  data: equbQuery, loading: equbQueryIsLoading, error: equbQueryError } = useQuery(GET_EQUBS_INFO, {
+      variables: { equb: EqubParam },
+    });
+  
+    if(equbQueryError ) return <> <p> Error...</p></>
+
+    if(equbQueryIsLoading) return <> <p> Loading...</p></>
+    
+  console.log("equbQuery -> ", equbQuery)
+  const { equbs } = equbQuery
+  
+    const handleStartClick = (option) => {
+      console.log("option ->", option)
       setOpenModal(true);
       setModalContent(
-        <ModalContent setOpenModal={setOpenModal} address={address} />
+        <ModalContent setOpenModal={setOpenModal} props={option} />
       );
     };
   return (
@@ -70,9 +95,9 @@ const Equb = () => {
       <span className="text-2xl font-medium">Equb [Name/ID] A dedicated space to view, manage, and discuss your Equb details</span>       
         <div className="gap-8 flex flex-row">
           <div className="border rounded-md p-4 w-1/2 gap-4 flex flex-col">
-        {ownerEqubAddress?.length > 0 && <span className="text-2xl font-medium">Current Status</span>}
-        {ownerEqubAddress &&  <div >
-          {ownerEqubAddress.map((option, index) => {
+        {equbs?.length > 0 && <span className="text-2xl font-medium">Current Status</span>}
+        {equbs &&  <div >
+          {equbs.map((option, index) => {
             return (
               <div className="gap-8">
                 {option.equbStarted && <div key={index}>
@@ -121,9 +146,9 @@ const Equb = () => {
             </div>
 
             <div className="border rounded-md p-4 w-1/2 gap-4 flex flex-col">
-                  {ownerEqubAddress?.length > 0 && <span className="text-2xl font-medium">Financial Details</span>}
-                  {ownerEqubAddress &&  <div>
-          {ownerEqubAddress.map((option, index) => {
+                  {equbs?.length > 0 && <span className="text-2xl font-medium">Financial Details</span>}
+                  {equbs &&  <div>
+          {equbs.map((option, index) => {
             return (
               <div className="gap-8">
                 {option.equbStarted && <div key={index}>
@@ -166,9 +191,9 @@ const Equb = () => {
         <div>
 
         <div className="border rounded-md p-4 w-full mb-8 flex flex-col gap-4">
-        {ownerEqubAddress?.length > 0 && <span className="text-2xl font-medium">Cycle Status</span>}
-        {ownerEqubAddress &&  <div >
-          {ownerEqubAddress.map((option, index) => {
+        {equbs?.length > 0 && <span className="text-2xl font-medium">Cycle Status</span>}
+        {equbs &&  <div >
+          {equbs.map((option, index) => {
             return (
               <div className="gap-8">
                 {option.equbStarted && <div key={index}>
@@ -220,29 +245,30 @@ const Equb = () => {
             
                 </div>
                 
-             
-                </div>}
-
-                
-              </div>
-            );
-          })}
-          <div className="w-full flex pt-2 justify-start">
+                <div className="w-full flex pt-2 justify-start">
            <button className="border pt-2 border-black rounded-md hover:bg-slate-100 w-2/12 p-2 flex justify-center"
-                  onClick={ () => {handleStartClick(option.equbAddress)}}
+                  onClick={ () => {handleStartClick(option)}}
                  >
                     JOIN CYCLE
                   </button>
                   </div>
+                </div>}
+
+              
+                
+              </div>
+            );
+          })}
+         
         </div>}
         </div>
 
                       
 
         <div className="border rounded-md p-4 w-full flex flex-col gap-4">
-        {ownerEqubAddress?.length > 0 && <span className="text-2xl font-medium">Members' List</span>}
-        {ownerEqubAddress &&  <div >
-          {ownerEqubAddress.map((option, index) => {
+        {equbs?.length > 0 && <span className="text-2xl font-medium">Members' List</span>}
+        {equbs &&  <div >
+          {equbs.map((option, index) => {
             return (
               <div className="gap-8">
                 {option.equbStarted && <div key={index}>
