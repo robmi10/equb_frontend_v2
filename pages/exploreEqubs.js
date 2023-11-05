@@ -1,5 +1,5 @@
 import { EqubContext } from '@/components/context/context';
-import React, { useContext,  useState } from 'react';
+import React, { useContext, useState } from 'react';
 import WebJoinEqub from '@/components/web3/webJoinEqub';
 import { AiOutlineClose, AiOutlineArrowRight } from 'react-icons/ai';
 import { ethers } from 'ethers';
@@ -61,7 +61,7 @@ const ModalContent = ({ setOpenModal, props }) => {
 };
 
 const ExploreEqubs = () => {
-  const { setOpenModal, allEqubs, toastNotification, setModalContent } =
+  const { setOpenModal, allEqubs, setModalContent } =
     useContext(EqubContext);
   const { data, loading, error } = useQuery(GET_ALL_EQUBS);
 
@@ -115,9 +115,9 @@ const ExploreEqubs = () => {
   return (
     <div className="h-screen w-full flex justify-center">
       <div className="w-3/4 h-full flex flex-col space-y-10 p-10">
-        <div className="flex flex-col space-y-5 w-2/4  mb-12 pt-5">
-          <span className="font-bold text-5xl">Explore Equbs</span>
-          <span className="font-medium text-4xl">
+        <div className="flex flex-col space-y-5 w-3/4  mb-12 ">
+          <span className="font-bold text-4xl">Explore Equbs</span>
+          <span className="font-medium text-3xl">
             Discover various Equbs tailored to different preferences and needs.
           </span>
           <span className=" font-medium text-2xl text-gray-400">
@@ -125,11 +125,10 @@ const ExploreEqubs = () => {
             or specific themes, you'll find an Equb that fits.
           </span>
         </div>
-        {allEqubs.length > 0 && (
-          <span className="text-2xl">Search Different Equbs</span>
+        {searchList.length > 0 && (
+          <span className="font-medium text-lg">Search Different Equbs</span>
         )}
 
-        <span className="font-medium text-lg"> Search Different Equbs </span>
         <input
           type="text"
           id="members"
@@ -208,12 +207,11 @@ const ExploreEqubs = () => {
                       </div>
                       <div class="flex justify-end">
                         <button
-                          className="border-b flex items-center gap-4 border-black hover:bg-slate-50 w-2/12 p-2 justify-center"
+                          className="border-b flex items-center gap-4 border-black hover:bg-slate-50 w-2/12 p-2 mb-8 justify-center"
                           onClick={() => {
                             handleStartClick(option);
                           }}
                         >
-
                           <p>JOIN EQUB</p>
                           <AiOutlineArrowRight />
                         </button>

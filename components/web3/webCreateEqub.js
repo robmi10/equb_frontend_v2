@@ -60,20 +60,22 @@ const WebCreateEqub = () => {
     let vrfcoordinator = "0x7a1bac17ccc5b313516c5e16fb24f7659aa5ebed";
     let keyhash =
       "0x4b09e658ed251bcafeebbc69400383d49f344ace09b9576fe248bb02c003fe9f";
-    const equbEndTimestamp = length * secondsPerWeek
+    const equbEndTimestamp = Number(length) * secondsPerWeek
 
     switch (durationType) {
       case "days":
-        durationInSeconds = duration * secondsPerDay;
+        durationInSeconds = Number(duration) * secondsPerDay;
         break;
       case "weeks":
-        durationInSeconds = duration * secondsPerWeek;
+        durationInSeconds = Number(duration) * secondsPerWeek;
         break;
       default:
         console.error("Invalid duration type");
         break;
     }
 
+    console.log({ length })
+    console.log({ duration })
     console.log({ account })
     console.log({ durationInSeconds })
     console.log({ equbEndTimestamp })

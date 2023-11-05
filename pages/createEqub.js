@@ -280,8 +280,8 @@ const CreateEqub = () => {
 
           {myActiveEqubList.map((option, index) => {
             return (
-              <div className="pt-2 flex gap-24 bg-red-300">
-                {!option.equbStarted && <div key={index} className="w-full justify-between flex items-center">
+              <div className="pt-6 pb-12">
+                {!option.equbStarted && <div key={index} className="w-full justify-between flex items-center border-b">
                   <span>
                     <HiOutlineStatusOnline />
                   </span>
@@ -295,7 +295,7 @@ const CreateEqub = () => {
                     onClick={() => {
                       handleStartClick(option.equbAddress);
                     }}
-                    className="border border-black rounded-md hover:bg-slate-100 w-2/12 p-2"
+                    className="border bg-black text-white rounded-md w-2/12 p-2"
                   >
                     START EQUB
                   </button>
