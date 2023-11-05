@@ -5,13 +5,10 @@ import { ethers } from "ethers";
 import { EqubContext } from "../context/context";
 import { Contract } from "@ethersproject/contracts";
 
-const WebStartEqub = (EQUB_ADDRES) => {
-  const { address, setLoader, setOpenModal, setToastNotifcation } =
+const WebStartEqub = (EQUB_ADDRES, refetch) => {
+  const { setLoader, setOpenModal, setToastNotifcation, toastNotification } =
     useContext(EqubContext);
-
-  console.log({EQUB_ADDRES})
   const equbFactoryInterface = new ethers.utils.Interface(equbInfo);
-
   const equbAddressContract = new Contract(EQUB_ADDRES, equbFactoryInterface);
 
   const {
@@ -23,13 +20,16 @@ const WebStartEqub = (EQUB_ADDRES) => {
   useEffect(() => {
     if (startEqubStatus.status === "Mining") {
       setLoader(true);
-      console.log("inside MINING");
     }
-    if (startEqubStatus.status === "Success") {
+    if (startEqubStatus.status === "Error" && !toastNotification) {
+      setToastNotifcation({ title: "Equb", desc: "Equb started", status: "error" });
+    }
+    if (startEqubStatus.status === "Success" && !toastNotification) {
       setLoader(false);
       setOpenModal(false);
-      setToastNotifcation(true);
-      console.log("inside SUCCESS");
+      setToastNotifcation({ title: "Equb", desc: "Equb started", status: "success" });
+      console.log("toastNotification -> ", toastNotification)
+      refetch();
     }
   });
 

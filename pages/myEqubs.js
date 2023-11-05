@@ -1,14 +1,12 @@
-import { EqubContext } from '@/components/context/context';
 import Link from 'next/link';
-import React, { useContext } from 'react'
+import React from 'react'
 import { useQuery } from '@apollo/client';
 import { GET_OWNER_EQUBS, GET_JOINED_EQUBS } from '@/components/apollo';
 import { useEthers } from "@usedapp/core";
 import { AiOutlineArrowRight } from 'react-icons/ai';
+import BouncerLoader from '@/components/animation/bouncer';
 
 const MyEqubs = () => {
-  const { allEqubs } =
-    useContext(EqubContext)
   const { account } = useEthers();
 
   if (!account) return false
@@ -22,15 +20,19 @@ const MyEqubs = () => {
 
   if (myEqubsError || joinedEqubsError) return <> <p> Error...</p></>
 
-  if (joinedEqubsLoading || myEqubsLoading) return <> <p> Loading...</p></>
-
+  if (joinedEqubsLoading || myEqubsLoading)
+    return (
+      <div className='h-screen flex justify-center items-center'>
+        <BouncerLoader />
+      </div>
+    );
   const { equbs: myEqubList } = myEqubs
   const { equbs: joinedEqubList } = joinedEqubs
 
   console.log({ myEqubs })
   console.log({ joinedEqubList })
   return (
-    <div className="h-screen w-full flex justify-center">
+    <div className="h-full w-full flex justify-center">
       <div className="w-3/4 h-full flex flex-col space-y-5 p-10">
         <div className='flex flex-col space-y-5 w-3/4  mb-12'>
 

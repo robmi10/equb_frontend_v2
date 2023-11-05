@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { EqubContext } from "../components/context/context";
 import { AiOutlineClose } from "react-icons/ai";
 import { HiOutlineStatusOnline } from "react-icons/hi";
-
 import WebCreateEqub from "../components/web3/webCreateEqub";
 import BouncerLoader from "../components/animation/bouncer";
 import Toast from "../components/Toast/toaster";
@@ -11,13 +10,18 @@ import { useEthers } from "@usedapp/core";
 import { GET_MY_INACTIVATED_EQUBS } from "@/components/apollo";
 import { useQuery } from "@apollo/client";
 
-const ModalContent = ({ setOpenModal, address }) => {
-  const { useStartEqub } = WebStartEqub(address);
-  const { loader, toastNotification } = useContext(EqubContext);
+const ModalContent = ({ setOpenModal, address, refetch }) => {
+  const { useStartEqub } = WebStartEqub(address, refetch);
+  const { loader } = useContext(EqubContext);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     event.preventDefault();
-    useStartEqub();
+    try {
+      await useStartEqub();
+      setToaster(true)
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   return (
@@ -50,23 +54,14 @@ const ModalContent = ({ setOpenModal, address }) => {
           {!loader ? "Confirm" : <BouncerLoader />}
         </button>
       </div>
-      {toastNotification && (
-        <Toast
-          title={`Equb started.`}
-          description={`Equb with ${address.toString().substr(0, 14)} started.`}
-          status={"success"}
-          duration={4000}
-          isClosable={true}
-        />
-      )}
     </div>
   );
 };
 
-const ModalContentChild = ({ setOpenModal }) => {
+const ModalContentChild = ({ setOpenModal, refetch }) => {
   const { loader } = useContext(EqubContext);
-  const { useCreateEqubExecute } = WebCreateEqub();
 
+  const { useCreateEqubExecute } = WebCreateEqub(refetch);
 
   const [formInput, setformInput] = useState({
     totalMembers: "",
@@ -229,36 +224,38 @@ const ModalContentChild = ({ setOpenModal }) => {
 };
 
 const CreateEqub = () => {
-  const { setOpenModal, ownerEqubAddress, toastNotification, setModalContent } =
+  const { setOpenModal, toastNotification, setModalContent } =
     useContext(EqubContext);
   const { account } = useEthers();
 
-  const { data: myActiveEqubsQuery, loading: myActiveEqubsQueryLoading, error: myActiveEqubsQueryError } = useQuery(GET_MY_INACTIVATED_EQUBS, {
+  const { data: myActiveEqubsQuery, loading: myActiveEqubsQueryLoading, error: myActiveEqubsQueryError, refetch } = useQuery(GET_MY_INACTIVATED_EQUBS, {
     variables: { owner: account, equbStarted: false },
   });
 
-  console.log({ myActiveEqubsQuery })
-  console.log({ myActiveEqubsQueryError })
-  console.log({ myActiveEqubsQueryLoading })
   if (myActiveEqubsQueryError) return <> <p> Error...</p></>
 
-  if (myActiveEqubsQueryLoading) return <> <p> Loading...</p></>
+  console.log("inside create toastNotification ->", toastNotification)
+
+  if (myActiveEqubsQueryLoading)
+    return (
+      <div className='h-screen flex justify-center items-center'>
+        <BouncerLoader />
+      </div>
+    );
 
   const { equbs: myActiveEqubList } = myActiveEqubsQuery
 
-
   const showModal = () => {
     setOpenModal(true);
-    setModalContent(<ModalContentChild setOpenModal={setOpenModal} />);
+    setModalContent(<ModalContentChild setOpenModal={setOpenModal} refetch={refetch} />);
   };
 
   const handleStartClick = (address) => {
     setOpenModal(true);
     setModalContent(
-      <ModalContent setOpenModal={setOpenModal} address={address} />
+      <ModalContent setOpenModal={setOpenModal} address={address} refetch={refetch} />
     );
   };
-
 
   return (
     <div className="h-screen w-full flex justify-center">
@@ -307,9 +304,9 @@ const CreateEqub = () => {
       </div>
       {toastNotification && (
         <Toast
-          title={"Equb created."}
-          description={`New Equb is created.`}
-          status={"success"}
+          title={toastNotification.title}
+          description={toastNotification.desc}
+          status={toastNotification.status}
           duration={4000}
           isClosable={true}
         />

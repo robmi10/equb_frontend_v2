@@ -5,12 +5,14 @@ import { AiOutlineClose, AiOutlineArrowRight } from 'react-icons/ai';
 import { ethers } from 'ethers';
 import BouncerLoader from '@/components/animation/bouncer';
 import { useQuery } from '@apollo/client';
-import { GET_ALL_EQUBS } from '@/components/apollo';
+import { GET_ALL_EXPLORE_EQUBS } from '@/components/apollo';
+import { Toast } from '@chakra-ui/react';
+import { useEthers } from '@usedapp/core';
 
-const ModalContent = ({ setOpenModal, props }) => {
+const ModalContent = ({ setOpenModal, props, refetch }) => {
   const { collateralAmount, equbAddress } = props;
-  const { useJoinEqub } = WebJoinEqub(equbAddress);
-  const { loader, toastNotification } = useContext(EqubContext);
+  const { useJoinEqub } = WebJoinEqub(equbAddress, refetch);
+  const { loader } = useContext(EqubContext);
 
   const handleSubmit = () => {
     event.preventDefault();
@@ -47,31 +49,25 @@ const ModalContent = ({ setOpenModal, props }) => {
           {!loader ? 'Confirm' : <BouncerLoader />}
         </button>
       </div>
-      {toastNotification && (
-        <Toast
-          title={`Equb started.`}
-          description={`Equb with ${address.toString().substr(0, 14)} started.`}
-          status={'success'}
-          duration={4000}
-          isClosable={true}
-        />
-      )}
     </div>
   );
 };
 
 const ExploreEqubs = () => {
-  const { setOpenModal, allEqubs, setModalContent } =
+  const { setOpenModal, toastNotification, setModalContent } =
     useContext(EqubContext);
-  const { data, loading, error } = useQuery(GET_ALL_EQUBS);
+  const { account } = useEthers();
+
+  const { data, loading, error, refetch } = useQuery(GET_ALL_EXPLORE_EQUBS, {
+    variables: { member: account }
+  });
 
   const [searchFilter, setSearchFilter] = useState('');
   if (loading)
     return (
-      <>
-        {' '}
-        <p> loading...</p>
-      </>
+      <div className='h-screen flex justify-center items-center'>
+        <BouncerLoader />
+      </div>
     );
   if (!data) return false;
   const { equbs } = data;
@@ -86,7 +82,7 @@ const ExploreEqubs = () => {
   const handleStartClick = (option) => {
     setOpenModal(true);
     setModalContent(
-      <ModalContent setOpenModal={setOpenModal} props={option} />,
+      <ModalContent setOpenModal={setOpenModal} props={option} refetch={refetch} />,
     );
   };
 
@@ -94,7 +90,7 @@ const ExploreEqubs = () => {
     setSearchFilter(e.target.value);
   };
 
-  const getDate = (timeStamp, totalMembers) => {
+  const getDate = (timeStamp) => {
     const unixTimestamp = timeStamp;
     const date = new Date(unixTimestamp * 1000); // Multiply by 1000 to convert seconds to milliseconds
 
@@ -113,8 +109,8 @@ const ExploreEqubs = () => {
   };
 
   return (
-    <div className="h-screen w-full flex justify-center">
-      <div className="w-3/4 h-full flex flex-col space-y-10 p-10">
+    <div className="h-full w-full flex justify-center">
+      <div className="w-3/4 h-full flex flex-col space-y-10 p-10 ">
         <div className="flex flex-col space-y-5 w-3/4  mb-12 ">
           <span className="font-bold text-4xl">Explore Equbs</span>
           <span className="font-medium text-3xl">
@@ -224,6 +220,15 @@ const ExploreEqubs = () => {
           </div>
         )}
       </div>
+      {toastNotification && (
+        <Toast
+          title={toastNotification.title}
+          description={toastNotification.desc}
+          status={toastNotification.status}
+          duration={4000}
+          isClosable={true}
+        />
+      )}
     </div>
   );
 };

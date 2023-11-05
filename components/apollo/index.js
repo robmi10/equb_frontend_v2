@@ -1,21 +1,24 @@
 import gql from 'graphql-tag';
 
-export const GET_ALL_EQUBS = gql`
-{
-  equbs {
-    id
-    equbStarted
-    equbLength
-    equbEnded
-    equbAddress
-    durationOfEachPeriod
-    owner
-    timeStamp
-    totalMembers
-    collateralAmount
-    contributionAmount
-  }
-}
+export const GET_ALL_EXPLORE_EQUBS = gql`
+  query GetExploreEqubs($member: String!) {
+      equbs(
+        where: {cycleMemberInfos_: {member_not_contains: $member}, owner_not: $member}
+      ) {
+        id
+        equbStarted
+        equbLength
+        equbEnded
+        equbAddress
+        durationOfEachPeriod
+        owner
+        timeStamp
+        totalMembers
+        collateralAmount
+        contributionAmount
+      }
+    }
+
 `;
 
 export const GET_JOINED_EQUBS = gql`

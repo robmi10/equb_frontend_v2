@@ -6,6 +6,7 @@ import Layout from "../components/layout/layout";
 import { ChakraProvider } from "@chakra-ui/react";
 import { ApolloProvider } from '@apollo/client';
 import { client } from "./apollo-client";
+import { Footer } from "@/components/footer/footer";
 
 const config = {
   networks: [Mumbai],
@@ -23,13 +24,10 @@ const App = ({ Component, pageProps }) => {
           <ApolloProvider client={client}>
             <EqubProvider>
               <Layout>
-                <div className="flex justify-center">
-                <Navbar />
-                </div>
                 <Component {...pageProps} />
               </Layout>
             </EqubProvider>
-            </ApolloProvider>
+          </ApolloProvider>
         </DAppProvider>
       </ChakraProvider>
     </>

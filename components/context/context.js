@@ -6,7 +6,6 @@ import { twMerge } from "tailwind-merge";
 export const EqubContext = createContext();
 
 const EqubProvider = ({ children }) => {
-  const { account } = useEthers();
   const [address, setAddress] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [modalContent, setModalContent] = useState(false);
@@ -15,7 +14,6 @@ const EqubProvider = ({ children }) => {
   const [toastNotification, setToastNotifcation] = useState(false);
   const [ownerEqubAddress, setOwnerEqubAddress] = useState(false);
   const [allEqubs, setAllEqubs] = useState(false);
-  const [joinedEqubs, setJoinedEqubs] = useState(false);
 
   const closeModal = () => {
     setOpenModal(false);

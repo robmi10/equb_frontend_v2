@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 const Home = () => {
+  console.log("iNSIDE HOME")
   return (
     <>
       <div className="w-full p-10 h-screen">

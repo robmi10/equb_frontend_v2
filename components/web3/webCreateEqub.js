@@ -7,8 +7,8 @@ import { Contract } from "@ethersproject/contracts";
 import { EQUB_FACTORY_ADDRESS } from "../../ABI_ADDRESS/address";
 import Web3 from "web3";
 
-const WebCreateEqub = () => {
-  const { loader, setLoader, setOpenModal, setToastNotifcation } =
+const WebCreateEqub = (refetch) => {
+  const { loader, setLoader, setOpenModal, setToastNotifcation, toastNotification } =
     useContext(EqubContext);
   const { account } = useEthers();
   const equbFactoryInterface = new ethers.utils.Interface(equbFactoryInfo);
@@ -30,10 +30,15 @@ const WebCreateEqub = () => {
       setLoader(true);
       console.log("inside MINING");
     }
-    if (createEqubStatus.status === "Success" && loader) {
+    if (createEqubStatus.status === "Error" && !toastNotification) {
+      setToastNotifcation({ title: "Equb", desc: "Equb created", status: "error" });
+    }
+    if (createEqubStatus.status === "Success" && !toastNotification) {
       setLoader(false);
       setOpenModal(false);
-      setToastNotifcation(true);
+      setToastNotifcation({ title: "Equb", desc: "Equb created", status: "success" });
+      console.log(" toastNotification ->", toastNotification)
+      refetch()
       console.log("inside SUCCESS");
     }
   });

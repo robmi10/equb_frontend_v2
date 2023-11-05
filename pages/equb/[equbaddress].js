@@ -1,16 +1,18 @@
+import BouncerLoader from '@/components/animation/bouncer';
 import { GET_EQUBS_INFO } from '@/components/apollo';
 import { EqubContext } from '@/components/context/context';
 import WebJoinEqub from '@/components/web3/webJoinEqub';
 import { useQuery } from '@apollo/client';
+import { Toast } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useContext } from 'react'
 import { AiOutlineClose } from 'react-icons/ai';
 
-const ModalContent = ({ setOpenModal, props }) => {
+const ModalContent = ({ setOpenModal, props, refetch }) => {
   const { collateralAmount, equbAddress } = props
 
-  const { useJoinEqub } = WebJoinEqub(equbAddress);
-  const { loader, toastNotification } = useContext(EqubContext);
+  const { useJoinEqub } = WebJoinEqub(equbAddress, refetch);
+  const { loader } = useContext(EqubContext);
 
   const handleSubmit = () => {
     event.preventDefault();
@@ -47,21 +49,12 @@ const ModalContent = ({ setOpenModal, props }) => {
           {!loader ? "Confirm" : <BouncerLoader />}
         </button>
       </div>
-      {toastNotification && (
-        <Toast
-          title={`Equb started.`}
-          description={`Equb with ${address.toString().substr(0, 14)} started.`}
-          status={"success"}
-          duration={4000}
-          isClosable={true}
-        />
-      )}
     </div>
   );
 };
 
 const Equb = () => {
-  const { setOpenModal, ownerEqubAddress, toastNotification, setModalContent } =
+  const { setOpenModal, toastNotification, setModalContent } =
     useContext(EqubContext);
 
   const router = useRouter();
@@ -70,13 +63,18 @@ const Equb = () => {
   console.log("EqubParam ->", EqubParam)
 
 
-  const { data: equbQuery, loading: equbQueryIsLoading, error: equbQueryError } = useQuery(GET_EQUBS_INFO, {
+  const { data: equbQuery, loading: equbQueryIsLoading, error: equbQueryError, refetch } = useQuery(GET_EQUBS_INFO, {
     variables: { equb: EqubParam },
   });
 
   if (equbQueryError) return <> <p> Error...</p></>
 
-  if (equbQueryIsLoading) return <> <p> Loading...</p></>
+  if (equbQueryIsLoading)
+    return (
+      <div className='h-screen flex justify-center items-center'>
+        <BouncerLoader />
+      </div>
+    );
 
   console.log("equbQuery -> ", equbQuery)
   const { equbs } = equbQuery
@@ -85,11 +83,11 @@ const Equb = () => {
     console.log("option ->", option)
     setOpenModal(true);
     setModalContent(
-      <ModalContent setOpenModal={setOpenModal} props={option} />
+      <ModalContent setOpenModal={setOpenModal} props={option} refetch={refetch} />
     );
   };
   return (
-    <div className="h-screen w-full flex justify-center">
+    <div className="h-full   w-full flex justify-center">
       <div className="w-3/4 h-full flex flex-col space-y-10 p-10">
         <span className=" text-4xl font-semibold"> Equb Details</span>
         <span className="text-3xl font-medium">Equb [Name/ID] A dedicated space to view, manage, and discuss your Equb details</span>
@@ -253,8 +251,6 @@ const Equb = () => {
             </div>}
           </div>
 
-
-
           {equbs?.length > 0 && <span className="text-2xl font-medium">MEMBER'S LIST</span>}
           <div className="border rounded-md p-4 w-full flex flex-col gap-4">
             {equbs && <div >
@@ -308,6 +304,15 @@ const Equb = () => {
           </div>
         </div>
       </div>
+      {toastNotification && (
+        <Toast
+          title={toastNotification.title}
+          description={toastNotification.desc}
+          status={toastNotification.status}
+          duration={4000}
+          isClosable={true}
+        />
+      )}
     </div>
   )
 }
