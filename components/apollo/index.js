@@ -81,7 +81,7 @@ export const GET_EQUBS_INFO = gql`
     `;
 
 export const GET_MY_INACTIVATED_EQUBS = gql`
-    query GetEqubInfo($owner: String!, $equbStarted: Boolean!) {
+    query GetEqubInactivated($owner: String!, $equbStarted: Boolean!) {
       equbs(where: {owner: $owner, equbStarted: $equbStarted}) {
         contributionAmount
         collateralAmount
@@ -101,5 +101,43 @@ export const GET_MY_INACTIVATED_EQUBS = gql`
     }
   `;
 
+export const GET_EQUB_DETAILS = gql`
+  query GetEqubDetails($equb: String!) {
+    equbs(where: {equbAddress: $equb}) {
+      totalMembers
+      currentWeekOrMonth
+      cycleJoins {
+        id
+        member
+        timestamp
+      }
+    }
+  }
+`;
 
+export const GET_EQUB_FINANCIAL_DETAILS = gql`
+      query GetFinancialDetails($equb: String!) {
+        equbs(where: {equbAddress: $equb}) {
+          contributionAmount
+          collateralAmount
+          currentWeekOrMonth
+          contributions {
+            totalsum
+            id
+          }
+        }
+      }
+  `;
 
+export const GET_EQUB_CYCLE_DETAILS = gql`
+  query GetCycleDetails($equb: String!) {
+    equbs(where: {equbAddress: $equb}) {
+      contributionAmount
+      collateralAmount
+      contributions {
+        totalsum
+        id
+      }
+    }
+  }
+`;

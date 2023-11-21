@@ -34,6 +34,12 @@
       },
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "joinCycleDeadlineDuration",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
         "internalType": "address",
         "name": "vrfCoordinator",
         "type": "address"
@@ -91,6 +97,11 @@
       {
         "internalType": "uint256",
         "name": "_durationOfEachPeriod",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_joinCycleDeadlineDuration",
         "type": "uint256"
       },
       {

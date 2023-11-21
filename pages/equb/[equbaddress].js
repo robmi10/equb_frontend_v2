@@ -1,5 +1,5 @@
 import BouncerLoader from '@/components/animation/bouncer';
-import { GET_EQUBS_INFO } from '@/components/apollo';
+import { GET_EQUBS_INFO, GET_EQUB_DETAILS, GET_EQUB_FINANCIAL_DETAILS } from '@/components/apollo';
 import { EqubContext } from '@/components/context/context';
 import WebJoinEqub from '@/components/web3/webJoinEqub';
 import { useQuery } from '@apollo/client';
@@ -7,6 +7,12 @@ import { Toast } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useContext } from 'react'
 import { AiOutlineClose } from 'react-icons/ai';
+import { HiSignal } from 'react-icons/hi2';
+import { AiFillCheckCircle, AiFillCloseCircle } from 'react-icons/ai';
+import { ethers } from 'ethers';
+
+
+
 
 const ModalContent = ({ setOpenModal, props, refetch }) => {
   const { collateralAmount, equbAddress } = props
@@ -63,76 +69,92 @@ const Equb = () => {
   console.log("EqubParam ->", EqubParam)
 
 
-  const { data: equbQuery, loading: equbQueryIsLoading, error: equbQueryError, refetch } = useQuery(GET_EQUBS_INFO, {
+  const { data: equbQuery, loading: equbQueryIsLoading, error: equbQueryError, refetch: refetchEqubQuery } = useQuery(GET_EQUBS_INFO, {
     variables: { equb: EqubParam },
   });
 
+  const { data: equbDetailsQuery, loading: equbQueryDetailsIsLoading, error: equbDetailsQueryError, refetch: refetchEqubDetailsQuery } = useQuery(GET_EQUB_DETAILS, {
+    variables: { equb: EqubParam },
+  });
+
+  const { data: equbFinancialsQuery, loading: equbQueryFinancialsIsLoading, error: equbFinancialsQueryError, refetch: refetchEqubFinancialsQuery } = useQuery(GET_EQUB_FINANCIAL_DETAILS, {
+    variables: { equb: EqubParam },
+  });
+
+
+  console.log("equbDetailsQueryError ->", equbDetailsQueryError)
+
+  console.log("equbQuery -> ", equbQuery)
+
+  console.log("equbQueryError ->", equbQueryError)
+
   if (equbQueryError) return <> <p> Error...</p></>
 
-  if (equbQueryIsLoading)
+
+
+
+  if (equbQueryIsLoading || !equbQuery || !equbDetailsQuery || !equbFinancialsQuery)
     return (
       <div className='h-screen flex justify-center items-center'>
         <BouncerLoader />
       </div>
     );
 
-  console.log("equbQuery -> ", equbQuery)
+  console.log({ equbDetailsQuery })
+
   const { equbs } = equbQuery
+  const { equbs: equbsDetail } = equbDetailsQuery
+  const { equbs: equbsFinancials } = equbFinancialsQuery
+
+  console.log({ equbs })
+  console.log({ equbsDetail })
+  console.log({ equbsFinancials })
 
   const handleStartClick = (option) => {
     console.log("option ->", option)
     setOpenModal(true);
     setModalContent(
-      <ModalContent setOpenModal={setOpenModal} props={option} refetch={refetch} />
+      <ModalContent setOpenModal={setOpenModal} props={option} refetch={refetchEqubQuery} />
     );
   };
   return (
     <div className="h-full   w-full flex justify-center">
       <div className="w-3/4 h-full flex flex-col space-y-10 p-10">
         <span className=" text-4xl font-semibold"> Equb Details</span>
-        <span className="text-3xl font-medium">Equb [Name/ID] A dedicated space to view, manage, and discuss your Equb details</span>
+        <span className="text-3xl font-medium">A dedicated space to view and manage your Equb details</span>
         <div className="gap-8 flex flex-row">
           <div className="border rounded-md p-4 w-1/2 gap-4 flex flex-col">
-            {equbs?.length > 0 && <span className="text-2xl font-medium">Status</span>}
-            {equbs && <div >
-              {equbs.map((option, index) => {
+            {equbsDetail?.length > 0 && <span className="text-2xl font-medium">STATUS</span>}
+            {<div >
+              {equbsDetail.map((option, index) => {
                 return (
                   <div className="gap-8">
-                    {option.equbStarted && <div key={index}>
+                    {<div key={index}>
                       <div className='w-full justify-between flex flex-col gap-4'>
                         <div className="flex border p-2 justify-between">
                           <label className="font-bold">
-                            Total Members
+                            TOTAL MEMBERS
                           </label>
                           <span>
-                            {option.equbAddress?.toString()?.substr(0, 15)}
-                          </span>
-                        </div>
-
-                        <div className="flex border p-2 justify-between ">
-                          <label className="font-bold  ">
-                            Next Contribution
-                          </label>
-                          <span>
-                            {option.owner?.toString()?.substr(0, 15)}
-                          </span>
-                        </div>
-
-                        <div className="flex border p-2 justify-between">
-                          <label className="font-bold">
-                            Current Cycle
-                          </label>
-                          <span >
                             {option.totalMembers?.toString()?.substr(0, 15)}
                           </span>
                         </div>
 
                         <div className="flex border p-2 justify-between">
-                          <label className="font-bold  ">
-                            Equb Status
+                          <label className="font-bold">
+                            CYCLE
                           </label>
                           <span >
-                            {option.equbStarted?.toString()?.substr(0, 15)}
+                            {option.currentWeekOrMonth?.toString()?.substr(0, 15)}
+                          </span>
+                        </div>
+
+                        <div className="flex border p-2 justify-between">
+                          <label className="font-bold  ">
+                            STATUS
+                          </label>
+                          <span >
+                            {option.cycleJoins[option?.currentWeekOrMonth]?.isFinished ? <HiSignal color='green' size={20} /> : option.cycleJoins[option.currentWeekOrMonth]?.hasJoined ? <HiSignal color='yellow' size={20} /> : <HiSignal color='red' size={20} />}
                           </span>
                         </div>
                       </div>
@@ -144,35 +166,36 @@ const Equb = () => {
           </div>
 
           <div className="border rounded-md p-4 w-1/2 gap-4 flex flex-col">
-            {equbs?.length > 0 && <span className="text-2xl font-medium">Financial Details</span>}
-            {equbs && <div>
-              {equbs.map((option, index) => {
+            {equbsFinancials?.length > 0 && <span className="text-2xl font-medium">FINANCIAL DETAILS</span>}
+            {<div>
+              {equbsFinancials.map((option, index) => {
                 return (
                   <div className="gap-8">
-                    {option.equbStarted && <div key={index}>
+                    {<div key={index}>
                       <div className='w-full justify-between flex flex-col gap-4'>
                         <div className="flex border p-2 justify-between">
                           <label className=" font-bold  ">
-                            Contribution
+                            COLLATERAL
                           </label>
                           <span>
-                            {option.equbAddress?.toString()?.substr(0, 15)}
+                            {ethers.utils.formatUnits(option.collateralAmount)} ETH
                           </span>
                         </div>
 
                         <div className="flex border p-2 justify-between">
-                          <label className=" font-bold  ">
-                            Total Value
+                          <label className="font-bold text-md">
+                            TVL
                           </label>
                           <span>
-                            {option.owner?.toString()?.substr(0, 15)}
+                            {option.contributions[option.currentWeekOrMonth]?.totalSum > 0 ? ethers.utils.formatUnits(option.contributions[option.currentWeekOrMonth]?.totalSum, 'ether') : 0}
                           </span>
                         </div>
 
                         <div className="flex border p-2 justify-between">
-                          <label className=" font-bold  ">
-                            Next Payout Estimate
+                          <label className="font-bold text-md">
+                            NEXT CYCLE
                           </label>
+                          {console.log("check option -> ", option)}
                           <span>
                             {option.totalMembers?.toString()?.substr(0, 15)}
                           </span>
@@ -190,14 +213,14 @@ const Equb = () => {
 
           {equbs?.length > 0 && <span className="text-2xl font-medium">CYCLE</span>}
           <div className="border rounded-md p-4 w-full mb-8 flex flex-col gap-4 mt-4">
-            {equbs && <div >
+            {<div >
               {equbs.map((option, index) => {
                 return (
                   <div className="gap-8">
-                    {option.equbStarted && <div key={index}>
+                    {<div key={index}>
                       <div className='w-full justify-between flex items-center'>
                         <div className="gap-2 flex flex-col">
-                          <label className="font-bold  ">
+                          <label className="font-bold">
                             LENGTH
                           </label>
                           <span>
@@ -257,11 +280,11 @@ const Equb = () => {
               {equbs.map((option, index) => {
                 return (
                   <div className="gap-8">
-                    {option.equbStarted && <div key={index}>
+                    {<div key={index}>
                       <div className='w-full justify-between flex items-center border p-4'>
 
                         <div className="gap-2 flex flex-col">
-                          <label className="w-42 font-bold  ">
+                          <label className="w-42 font-bold">
                             MEMBER
                           </label>
                           <span>
@@ -269,11 +292,11 @@ const Equb = () => {
                           </span>
                         </div>
                         <div className="gap-2 flex flex-col">
-                          <label className="font-bold  ">
+                          <label className="font-bold">
                             CONTRIBUTED
                           </label>
-                          <span>
-                            {option.equbAddress?.toString()?.substr(0, 15)}
+                          <span className="w-full flex justify-center">
+                            {option.equbEnded ? <AiFillCheckCircle color='green' size={20} /> : <AiFillCloseCircle color='red' size={20} />}
                           </span>
                         </div>
 
@@ -286,12 +309,13 @@ const Equb = () => {
                           </span>
                         </div>
 
-                        <div className="gap-2 flex flex-col">
+                        <div className="gap-2 flex flex-col justify-between">
                           <label className="font-bold">
                             Eliminated
                           </label>
-                          <span >
-                            {option.equbAddress?.toString()?.substr(0, 15)}
+                          <span className="w-full flex justify-center">
+                            {option.equbEnded ? <AiFillCheckCircle color='green' size={20} /> : <AiFillCloseCircle color='red' size={20} />}
+
                           </span>
                         </div>
 

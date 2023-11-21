@@ -53,6 +53,7 @@ const WebCreateEqub = (refetch) => {
       duration,
       durationType,
       subscriptionid,
+      joinCycleDeadlineDuration
     } = formInput;
 
     const secondsPerDay = 86400; // 24 hours * 60 minutes * 60 seconds
@@ -66,6 +67,7 @@ const WebCreateEqub = (refetch) => {
     let keyhash =
       "0x4b09e658ed251bcafeebbc69400383d49f344ace09b9576fe248bb02c003fe9f";
     const equbEndTimestamp = Number(length) * secondsPerWeek
+    const equbCycleDeadline = Number(joinCycleDeadlineDuration) * secondsPerDay
 
     switch (durationType) {
       case "days":
@@ -84,12 +86,14 @@ const WebCreateEqub = (refetch) => {
     console.log({ account })
     console.log({ durationInSeconds })
     console.log({ equbEndTimestamp })
+    console.log({ equbCycleDeadline })
     createEqubExecute(
       totalMembers,
       equbEndTimestamp,
       _collateral,
       _amount,
       durationInSeconds,
+      equbCycleDeadline,
       vrfcoordinator,
       keyhash,
       subscriptionid,
