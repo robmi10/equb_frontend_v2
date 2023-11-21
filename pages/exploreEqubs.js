@@ -202,9 +202,9 @@ const ExploreEqubs = () => {
 
                       </div>
                       <div class="flex justify-end">
-                      <button className="border pt-2 border-black hover:bg-slate-100 w-full p-2 flex justify-center"
-                            onClick={() => { handleStartClick(option) }}
-                          >
+                        <button className="border pt-2 border-black hover:bg-slate-100 w-full p-2 flex justify-center"
+                          onClick={() => { handleStartClick(option) }}
+                        >
                           <p>JOIN EQUB</p>
                         </button>
                       </div>

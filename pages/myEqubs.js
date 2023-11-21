@@ -9,6 +9,51 @@ import { HiSignal } from 'react-icons/hi2';
 
 import BouncerLoader from '@/components/animation/bouncer';
 
+const ModalContent = ({ setOpenModal, props, refetch }) => {
+  const { collateralAmount, equbAddress } = props
+
+  const { useJoinEqub } = WebJoinEqub(equbAddress, refetch);
+  const { loader } = useContext(EqubContext);
+
+  const handleSubmit = () => {
+    event.preventDefault();
+    useJoinEqub(collateralAmount);
+  };
+
+  return (
+    <div className="bg-white w-5/12 h-4/12 flex justify-center p-11 mt-4 rounded-md flex-col gap-4">
+      <button onClick={() => setOpenModal(false)}>
+        <AiOutlineClose />
+      </button>
+      <div>
+        <div className="flex flex-col gap-1">
+          <p >Do you want to join the equb with address</p>
+          <p className=" font-bold">{equbAddress?.toString().substr(0, 14)}?</p>
+        </div>
+      </div>
+      <div className="flex justify-between">
+        <button
+          className="border flex justify-center items-center border-black w-48 h-12 rounded-md hover:bg-slate-100"
+          onClick={() => {
+            setOpenModal(false);
+          }}
+        >
+          CANCEL
+        </button>
+        <button
+          className="border flex justify-center items-center border-black w-48 h-12 rounded-md hover:bg-slate-100"
+          onClick={() => {
+            handleSubmit();
+          }}
+        >
+          {" "}
+          {!loader ? "Confirm" : <BouncerLoader />}
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const MyEqubs = () => {
   const { account } = useEthers();
 
@@ -101,15 +146,11 @@ const MyEqubs = () => {
                       </div>
 
                    
-                        <button
-                          className="border-b flex items-center gap-2 border-black hover:bg-slate-50 w-2/12 p-2  justify-center"
-                          onClick={() => {
-                            handleStartClick(option);
-                          }}
-                        >
-                          <p>JOIN EQUB</p>
-                          <AiOutlineArrowRight />
-                        </button>
+                      <button className="border pt-2 border-black hover:bg-slate-100 w-2/12 p-2 flex justify-center"
+                            onClick={() => { handleStartClick(option) }}
+                          >
+                            JOIN EQUB
+                          </button>
 
                     </div>
                   </div>
