@@ -1,13 +1,16 @@
 import Link from 'next/link';
-import React from 'react'
+import React, { useContext } from 'react'
 import { useQuery } from '@apollo/client';
 import { GET_OWNER_EQUBS, GET_JOINED_EQUBS } from '@/components/apollo';
 import { useEthers } from "@usedapp/core";
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import { HiSignal } from 'react-icons/hi2';
+import { AiOutlineClose } from 'react-icons/ai';
 
 
 import BouncerLoader from '@/components/animation/bouncer';
+import { EqubContext } from '@/components/context/context';
+import WebJoinEqub from '@/components/web3/webJoinEqub';
 
 const ModalContent = ({ setOpenModal, props, refetch }) => {
   const { collateralAmount, equbAddress } = props
@@ -55,11 +58,14 @@ const ModalContent = ({ setOpenModal, props, refetch }) => {
 };
 
 const MyEqubs = () => {
+  const { setOpenModal, setModalContent } =
+    useContext(EqubContext);
   const { account } = useEthers();
+
 
   if (!account) return false
   console.log({ account })
-  const { data: myEqubs, loading: myEqubsLoading, error: myEqubsError } = useQuery(GET_OWNER_EQUBS, {
+  const { data: myEqubs, loading: myEqubsLoading, error: myEqubsError, refetch: refetchEqubQuery } = useQuery(GET_OWNER_EQUBS, {
     variables: { owner: account },
   });
   const { data: joinedEqubs, loading: joinedEqubsLoading, error: joinedEqubsError } = useQuery(GET_JOINED_EQUBS, {
@@ -74,6 +80,13 @@ const MyEqubs = () => {
         <BouncerLoader />
       </div>
     );
+
+  const handleStartClick = (option) => {
+    setOpenModal(true);
+    setModalContent(
+      <ModalContent setOpenModal={setOpenModal} props={option} refetch={refetchEqubQuery} />,
+    );
+  };
   const { equbs: myEqubList } = myEqubs
   const { equbs: joinedEqubList } = joinedEqubs
 
@@ -145,12 +158,12 @@ const MyEqubs = () => {
                         </span>
                       </div>
 
-                   
+
                       <button className="border pt-2 border-black hover:bg-slate-100 w-2/12 p-2 flex justify-center"
-                            onClick={() => { handleStartClick(option) }}
-                          >
-                            JOIN EQUB
-                          </button>
+                        onClick={() => { handleStartClick(option) }}
+                      >
+                        JOIN EQUB
+                      </button>
 
                     </div>
                   </div>

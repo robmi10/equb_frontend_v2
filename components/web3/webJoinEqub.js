@@ -25,12 +25,12 @@ const WebJoinEqub = (EQUB_ADDRES, refetch) => {
     }
     if (joinEqubStatus.status === "Error") {
       setLoader(true);
-      setToastNotifcation({ title: "Error", desc: `${address} got error joining cycle`, status: "error" });
+      setToastNotifcation({ title: "Error", desc: `${address} got error joining equb`, status: "error" });
     }
     if (joinEqubStatus.status === "Success") {
       setLoader(false);
       setOpenModal(false);
-      setToastNotifcation({ title: "Cycle", desc: `${address} joined cycle`, status: "success" });
+      setToastNotifcation({ title: "Equb", desc: `${address} joined equb`, status: "success" });
       refetch()
     }
   });
