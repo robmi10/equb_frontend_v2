@@ -326,15 +326,15 @@ const Equb = () => {
           </div>
         </div>
       </div>
-          {toastNotification && (
-            <Toast
-              title={toastNotification.title}
-              description={toastNotification.desc}
-              status={toastNotification.status}
-              duration={4000}
-              isClosable={true}
-            />
-          )}
+      {toastNotification && (
+        <Toast
+          title={toastNotification.title}
+          description={toastNotification.desc}
+          status={toastNotification.status}
+          duration={4000}
+          isClosable={true}
+        />
+      )}
     </>
   )
 }
