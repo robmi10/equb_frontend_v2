@@ -66,11 +66,15 @@ const MyEqubs = () => {
   if (!account) return false
   console.log({ account })
   const { data: myEqubs, loading: myEqubsLoading, error: myEqubsError, refetch: refetchEqubQuery } = useQuery(GET_OWNER_EQUBS, {
-    variables: { owner: account },
+    variables: { owner: account }, fetchPolicy: 'network-only',
   });
-  const { data: joinedEqubs, loading: joinedEqubsLoading, error: joinedEqubsError } = useQuery(GET_JOINED_EQUBS, {
-    variables: { equb: account },
+  const { data: joinedEqubs, loading: joinedEqubsLoading, error: joinedEqubsError, refetch: refetchJoinedEqubQuery } = useQuery(GET_JOINED_EQUBS, {
+    variables: { member: account }, fetchPolicy: 'network-only',
   });
+
+  console.log({ joinedEqubsError })
+
+  console.log({ myEqubsError })
 
   if (myEqubsError || joinedEqubsError) return <> <p> Error...</p></>
 
@@ -81,10 +85,12 @@ const MyEqubs = () => {
       </div>
     );
 
+  console.log("GET_JOINED_EQUBS ->", joinedEqubs)
+
   const handleStartClick = (option) => {
     setOpenModal(true);
     setModalContent(
-      <ModalContent setOpenModal={setOpenModal} props={option} refetch={refetchEqubQuery} />,
+      <ModalContent setOpenModal={setOpenModal} props={option} refetch={[refetchEqubQuery, refetchJoinedEqubQuery]} />,
     );
   };
   const { equbs: myEqubList } = myEqubs
@@ -103,6 +109,12 @@ const MyEqubs = () => {
             Welcome to your personal equb dashboard.</span>
           <span className="font-medium text-2xl text-gray-400">Here you can monitor and manage the equbs you own and see the ones you've joined.</span>
         </div>
+
+        {(!myEqubList.length > 0 && !joinedEqubList.length > 0) && (
+          <div className='h-96 flex  font-medium text-3xl '>
+            <h1>You currently haven't joined or created any Equbs</h1>
+          </div>
+        )}
 
         {myEqubList.length > 0 && <span className="text-xl">My Owned Equbs</span>}
         {myEqubList.length > 0 && <div className="border rounded-md p-8">
@@ -133,10 +145,10 @@ const MyEqubs = () => {
 
                       <div className="flex flex-col gap-2 justify-between h-14 items-center">
                         <span className="font-bold">
-                          TOTAL MEMBERS
+                          MEMBERS
                         </span>
                         <span>
-                          {option.totalMembers?.toString()?.substr(0, 15)}
+                          {option.totalEqubAmtPlayers?.toString()?.substr(0, 15)} - {option.totalMembers?.toString()?.substr(0, 15)}
                         </span>
                       </div>
 
@@ -202,10 +214,10 @@ const MyEqubs = () => {
 
                       <div className="flex flex-col gap-2 justify-between h-14 items-center">
                         <span className="font-bold">
-                          TOTAL MEMBERS
+                          MEMBERS
                         </span>
                         <span>
-                          {option.totalMembers?.toString()?.substr(0, 15)}
+                          {option.totalEqubAmtPlayers?.toString()?.substr(0, 15)} - {option.totalMembers?.toString()?.substr(0, 15)}
                         </span>
                       </div>
 

@@ -7,10 +7,17 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      keyframes: {
+        flipBottom: {
+          '100%': { transform: 'rotateX(90deg)' },
+        },
+        flipTop: {
+          '100%': { transform: 'rotateX(0deg)' },
+        },
+      },
+      animation: {
+        'flip-bottom': 'flipBottom 2s ease-in',
+        'flip-top': 'flipTop 2s ease-in',
       },
     },
   },

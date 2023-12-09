@@ -18,7 +18,17 @@ const WebJoinEqubCycle = (EQUB_ADDRES, refetch) => {
     const {
         state: joinEqubCycleStatus,
         send: joinEqubCycleExecute,
-    } = useContractFunction(equbAddressContract, "joinEqubCycle");
+    } = useContractFunction(equbAddressContract, "joinAndContributeCycle");
+
+    const doRefetch = async () => {
+        try {
+            for (const refetchFn of refetch) {
+                await refetchFn();
+            }
+        } catch (error) {
+            console.error("Error during refetch:", error);
+        }
+    };
 
     useEffect(() => {
         console.log("check joinEqubCycleStatus first ->", joinEqubCycleStatus)
@@ -32,6 +42,7 @@ const WebJoinEqubCycle = (EQUB_ADDRES, refetch) => {
             const msgErr = handleMsgError(decodedError)
             console.log("msgErr ->", msgErr)
             setToastNotifcation({ title: "Error", desc: `${msgErr}`, status: "error" });
+            setOpenModal(false);
         }
 
         if (joinEqubCycleStatus.status === "Mining") {
@@ -39,18 +50,13 @@ const WebJoinEqubCycle = (EQUB_ADDRES, refetch) => {
         }
         if (joinEqubCycleStatus.status === "Error") {
             setLoader(true);
-            // const decodedError = equbFactoryInterface.parseError()
-            // console.log(`Transaction failed: ${decodedError.name}`)
-
-            console.log("check joinEqubCycleStatus second ->", joinEqubCycleStatus)
-
             setToastNotifcation({ title: "Error", desc: `${address} got error joining cycle`, status: "error" });
         }
         if (joinEqubCycleStatus.status === "Success") {
             setLoader(false);
             setOpenModal(false);
             setToastNotifcation({ title: "Cycle", desc: `${address} joined cycle`, status: "success" });
-            refetch()
+            doRefetch()
         }
     });
 

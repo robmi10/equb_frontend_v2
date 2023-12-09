@@ -1,10 +1,41 @@
 import gql from 'graphql-tag';
 
-export const GET_ALL_EXPLORE_EQUBS = gql`
-  query GetExploreEqubs($member: String!) {
-      equbs(
-        where: {cycleMemberInfos_: {member_not_contains: $member}, owner_not: $member}
-      ) {
+export const GET_MEMBER_EQUBS = gql`
+  query GetNotMemberEqubs($member: String!) {  
+    cycleMemberInfos(
+      where: {member: $member}
+    ) {
+      id
+      member
+      owner
+      equb {
+        id 
+        equbStarted
+        equbLength
+        equbEnded
+        equbAddress
+        durationOfEachPeriod
+        owner
+        timeStamp
+        totalMembers
+        collateralAmount
+        contributionAmount
+        totalCycleAmtPlayers
+        totalEqubAmtPlayers
+      }
+    }
+  }
+`;
+
+export const GET_NOT_OWNER_AND_MEMBER_EQUBS = gql`
+  query GetExploreEqubs($member: String!) {   
+    cycleMemberInfos(
+      where: {or: [{member_not: $member}, {owner_not: $member}]}
+    ) {
+      id
+      member
+      owner
+      equb {
         id
         equbStarted
         equbLength
@@ -16,15 +47,17 @@ export const GET_ALL_EXPLORE_EQUBS = gql`
         totalMembers
         collateralAmount
         contributionAmount
+        totalCycleAmtPlayers
+        totalEqubAmtPlayers
       }
     }
-
+  }
 `;
 
 export const GET_JOINED_EQUBS = gql`
-query GetJoinedEqubs($equb: String!) {
+query GetJoinedEqubs($member: String!) {
         equbs(
-          where: {cycleMemberInfos_: {member: $equb}}
+          where: {cycleMemberInfos_: {member: $member}}
         ) {
           id
           equbStarted
@@ -37,6 +70,8 @@ query GetJoinedEqubs($equb: String!) {
           totalMembers
           collateralAmount
           contributionAmount
+          totalCycleAmtPlayers
+          totalEqubAmtPlayers
         }
       }
 `;
@@ -55,6 +90,7 @@ export const GET_OWNER_EQUBS = gql`
           contributionAmount
           collateralAmount
           durationOfEachPeriod
+          totalEqubAmtPlayers
         }
       }
     `;
@@ -106,6 +142,9 @@ export const GET_EQUB_DETAILS = gql`
     equbs(where: {equbAddress: $equb}) {
       totalMembers
       currentWeekOrMonth
+      collateralAmount
+      contributionAmount
+      equbAddress
       cycleJoins {
         id
         member
@@ -141,3 +180,42 @@ export const GET_EQUB_CYCLE_DETAILS = gql`
     }
   }
 `;
+
+export const GET_EQUB_CYCLE_PARTICIPANTS = gql`
+  query GetCycleParticipants($equb: String!){
+      cycleParticipants(where: {equb: $equb}) {
+        id
+        participant
+        participatedCycle
+        cycleId
+        participant
+        participatedCycle
+        contributed
+        penalties
+      }
+  }
+`
+
+export const GET_EQUB_CYCLE_INFO = gql`
+  query GetCycleInfo($equb: String!, $member: String!){
+    cycleStatuses(where: {equb: $equb}) {
+      id
+      winner
+      totalCycleAmtPlayers
+      startTimeStamp
+      joinCycleDeadline
+      isFinished
+      totalSum
+      endTimeStamp
+      joinCycleDeadline
+      cycleId
+      equb
+      participants(where: {participant: $member}) {
+        cycleId
+        participant
+        participatedCycle
+        penalties
+      }
+    }
+  }
+`

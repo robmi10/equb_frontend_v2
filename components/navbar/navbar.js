@@ -17,6 +17,9 @@ const Navbar = () => {
       <Link className="w-32" href="/myEqubs">
         MY EQUBS
       </Link>
+      <Link className="w-32" href="/createEqub">
+        ADMIN
+      </Link>
 
       {!account ? (
         <button className="w-32" onClick={activateBrowserWallet}>

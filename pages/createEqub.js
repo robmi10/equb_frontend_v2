@@ -120,7 +120,7 @@ const ModalContentChild = ({ setOpenModal, refetch }) => {
               htmlFor="length"
               className="block text-lg font-medium text-gray-700"
             >
-              Equb Length (in weeks)
+              Equb Length (in weeks or minutes)
             </label>
             <input
               type="number"
@@ -191,6 +191,7 @@ const ModalContentChild = ({ setOpenModal, refetch }) => {
               name="durationType"
               onChange={handleChange}
             >
+              <option value="minutes">Minutes</option>
               <option value="days">Days</option>
               <option value="weeks">Weeks</option>
             </select>
@@ -201,7 +202,7 @@ const ModalContentChild = ({ setOpenModal, refetch }) => {
               htmlFor="joinCycleDeadlineDuration"
               className="block text-lg font-medium text-gray-700"
             >
-              Cycle Deadline (in days)
+              Cycle Deadline (in days or minutes)
             </label>
             <input
               type="number"
@@ -323,15 +324,7 @@ const CreateEqub = () => {
           })}
         </div>}
       </div>
-      {toastNotification && (
-        <Toast
-          title={toastNotification.title}
-          description={toastNotification.desc}
-          status={toastNotification.status}
-          duration={4000}
-          isClosable={true}
-        />
-      )}
+
     </div>
   );
 };

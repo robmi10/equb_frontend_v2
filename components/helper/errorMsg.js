@@ -32,6 +32,10 @@ const handleMsgError = (errorMsg) => {
             return 'You have not joined the cycle.';
         case 'CycleIsFull':
             return 'The cycle is full and cannot accept more members.';
+        case 'MemberAlreadyExists':
+            return 'The member already exists';
+        case 'IncorrectAmount':
+            return 'Not the correct amount'
         default:
             return 'An unknown error occurred.';
     }

@@ -19,9 +19,10 @@ const Home = () => {
             </span>
           </div>
           <div className="space-x-8 w-2/4 ">
-            <button className="p-8 border-gray-10 hover:bg-slate-50  border rounded-md  text-lg font-lg">
+            <Link href="/exploreEqubs" className="p-8 border-gray-10 hover:bg-slate-50  border rounded-md  text-lg font-lg">
+              {/* exploreEqubs */}
               EXPLORE EQUBS
-            </button>
+            </Link>
             <button className=" p-8  bg-slate-100 hover:bg-slate-200  rounded-md text-lg font-lg">
               HOW IT WORKS
             </button>

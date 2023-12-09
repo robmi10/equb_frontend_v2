@@ -5,8 +5,7 @@ import { AiOutlineClose, AiOutlineArrowRight } from 'react-icons/ai';
 import { ethers } from 'ethers';
 import BouncerLoader from '@/components/animation/bouncer';
 import { useQuery } from '@apollo/client';
-import { GET_ALL_EXPLORE_EQUBS } from '@/components/apollo';
-import { Toast } from '@chakra-ui/react';
+import { GET_ALL_EXPLORE_EQUBS, GET_MEMBER_EQUBS, GET_NOT_MEMBER_EQUBS, GET_NOT_OWNER_AND_MEMBER_EQUBS, GET_NOT_OWNER_EQUBS } from '@/components/apollo';
 import { useEthers } from '@usedapp/core';
 
 const ModalContent = ({ setOpenModal, props, refetch }) => {
@@ -54,25 +53,44 @@ const ModalContent = ({ setOpenModal, props, refetch }) => {
 };
 
 const ExploreEqubs = () => {
-  const { setOpenModal, toastNotification, setModalContent } =
+  const { setOpenModal, setModalContent } =
     useContext(EqubContext);
   const { account } = useEthers();
 
-  const { data, loading, error, refetch } = useQuery(GET_ALL_EXPLORE_EQUBS, {
+  const { data: notMemberEqubs, loading: notMemberEqubsLoading, error: notMemberEqubsError, refetchNotMember } = useQuery(GET_MEMBER_EQUBS, {
     variables: { member: account }
   });
 
+  const { data: notOwnerEqubs, loading: notOwnerEqubsLoading, error: notOwnerEqubsError, refetchNotOwner } = useQuery(GET_NOT_OWNER_AND_MEMBER_EQUBS, {
+    variables: { member: account }
+  });
+  notOwnerEqubs
   const [searchFilter, setSearchFilter] = useState('');
-  if (loading)
+
+  if (notMemberEqubsError || notOwnerEqubsError) return <> <p> Error...</p></>
+
+  if (notMemberEqubsLoading || notOwnerEqubsLoading)
     return (
       <div className='h-screen flex justify-center items-center'>
         <BouncerLoader />
       </div>
     );
-  if (!data) return false;
-  const { equbs } = data;
-  console.log('apollo data -> ', data);
-  const searchList = equbs.filter(
+  if (!notMemberEqubs) return false;
+  const { cycleMemberInfos: equbsIsMember } = notMemberEqubs; // equbs where im a member
+  const { cycleMemberInfos: equbsNotOwnerOrMember } = notOwnerEqubs; // equbs where im not member and not owner
+
+  const filteredEqubs = equbsNotOwnerOrMember.reduce((acc, item) => {
+    // Check if equbsIsMember contains an item with the same id as the current item
+    const isMember = equbsIsMember.some(member => member.equb.equbAddress === item.equb.equbAddress);
+    if (!isMember) {
+      acc.push(item.equb);
+    }
+    return acc;
+  }, []);
+
+  console.log("filteredEqubs ->", filteredEqubs)
+
+  const searchList = filteredEqubs.filter(
     (option) =>
       option.totalMembers.includes(searchFilter) ||
       option.equbAddress.includes(searchFilter) ||
@@ -82,7 +100,7 @@ const ExploreEqubs = () => {
   const handleStartClick = (option) => {
     setOpenModal(true);
     setModalContent(
-      <ModalContent setOpenModal={setOpenModal} props={option} refetch={refetch} />,
+      <ModalContent setOpenModal={setOpenModal} props={option} refetch={[refetchNotMember, refetchNotOwner]} />,
     );
   };
 
@@ -122,18 +140,26 @@ const ExploreEqubs = () => {
           </span>
         </div>
         {searchList.length > 0 && (
-          <span className="font-medium text-lg">Search Different Equbs</span>
+          <div>
+            <span className="font-medium text-lg">Search Different Equbs</span>
+            <input
+              type="text"
+              id="members"
+              name="members"
+              className="p-2 w-full border rounded-md"
+              placeholder="Enter Equb name, owner, or keyword..."
+              value={searchFilter}
+              onChange={handleFilter}
+            />
+          </div>
         )}
 
-        <input
-          type="text"
-          id="members"
-          name="members"
-          className="p-2 w-full border rounded-md"
-          placeholder="Enter Equb name, owner, or keyword..."
-          value={searchFilter}
-          onChange={handleFilter}
-        />
+        {!searchList.length > 0 && (
+          <div className='h-96 flex  font-medium text-3xl '>
+            <h1>There are currently no active Equbs</h1>
+          </div>
+        )}
+
 
         {searchList && (
           <div>
@@ -156,7 +182,7 @@ const ExploreEqubs = () => {
                             Total Members
                           </span>
                           <span>
-                            {option.totalMembers?.toString()?.substr(0, 15)}
+                            {option.totalEqubAmtPlayers?.toString()?.substr(0, 15)} - {option.totalMembers?.toString()?.substr(0, 15)}
                           </span>
                         </div>
 
@@ -199,13 +225,14 @@ const ExploreEqubs = () => {
                             MATIC
                           </div>
                         </div>
-
                       </div>
-                      <div class="flex justify-end">
-                        <button className="border pt-2 border-black hover:bg-slate-100 w-full p-2 flex justify-center"
+                      <div class="flex justify-end mb-4">
+                        <button className="border-b pt-2 border-black w-1/6 p-2 flex justify-center items-center gap-4"
                           onClick={() => { handleStartClick(option) }}
                         >
                           <p>JOIN EQUB</p>
+
+                          <AiOutlineArrowRight />
                         </button>
                       </div>
                     </div>
@@ -216,15 +243,7 @@ const ExploreEqubs = () => {
           </div>
         )}
       </div>
-      {toastNotification && (
-        <Toast
-          title={toastNotification.title}
-          description={toastNotification.desc}
-          status={toastNotification.status}
-          duration={4000}
-          isClosable={true}
-        />
-      )}
+
     </div>
   );
 };

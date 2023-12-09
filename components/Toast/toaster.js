@@ -6,12 +6,12 @@ const Toast = ({ ...props }) => {
   const { title, description, status, duration, isClosable } = props;
   const { setToastNotifcation, toastNotification } = useContext(EqubContext);
   const toast = useToast();
-  // console.log("props ->", props)
+  console.log("props ->", props)
   // console.log("toastNotification ->", toastNotification)
   useEffect(() => {
     console.log({ toastNotification });
     setToastNotifcation(false);
-  });
+  }, [toastNotification]);
 
   toast({
     title: title,
