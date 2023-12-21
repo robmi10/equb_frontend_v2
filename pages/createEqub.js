@@ -4,13 +4,12 @@ import { AiOutlineClose } from "react-icons/ai";
 import { HiOutlineStatusOnline } from "react-icons/hi";
 import WebCreateEqub from "../components/web3/webCreateEqub";
 import BouncerLoader from "../components/animation/bouncer";
-import Toast from "../components/Toast/toaster";
 import WebStartEqub from "@/components/web3/webStartEqub";
 import { useEthers } from "@usedapp/core";
 import { GET_MY_INACTIVATED_EQUBS } from "@/components/apollo";
 import { useQuery } from "@apollo/client";
 
-const ModalContent = ({ setOpenModal, address, refetch }) => {
+const ModalStartEqub = ({ setOpenModal, address, refetch }) => {
   const { useStartEqub } = WebStartEqub(address, refetch);
   const { loader } = useContext(EqubContext);
 
@@ -58,10 +57,21 @@ const ModalContent = ({ setOpenModal, address, refetch }) => {
   );
 };
 
-const ModalContentChild = ({ setOpenModal, refetch }) => {
+const ModalCreateEqub = ({ setOpenModal, refetch }) => {
   const { loader } = useContext(EqubContext);
 
   const { useCreateEqubExecute } = WebCreateEqub(refetch);
+
+  const defaultFormValues = {
+    totalMembers: "",
+    length: "",
+    collateral: "",
+    amount: "",
+    duration: "",
+    durationType: "minutes",
+    subscriptionid: "",
+    joinCycleDeadlineDuration: ""
+  };
 
   const [formInput, setformInput] = useState({
     totalMembers: "",
@@ -69,7 +79,7 @@ const ModalContentChild = ({ setOpenModal, refetch }) => {
     collateral: "",
     amount: "",
     duration: "",
-    durationType: "",
+    durationType: "minutes",
     subscriptionid: "",
     joinCycleDeadlineDuration: ""
   });
@@ -82,9 +92,11 @@ const ModalContentChild = ({ setOpenModal, refetch }) => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setformInput((prevData) => ({
+      ...defaultFormValues,
       ...prevData,
       [name]: value,
     }));
+    console.log("formInput ->", formInput)
   };
 
   return (
@@ -189,6 +201,7 @@ const ModalContentChild = ({ setOpenModal, refetch }) => {
               className="mt-2"
               id="durationType"
               name="durationType"
+              defaultValue="minutes"
               onChange={handleChange}
             >
               <option value="minutes">Minutes</option>
@@ -267,20 +280,20 @@ const CreateEqub = () => {
 
   const { equbs: myActiveEqubList } = myActiveEqubsQuery
 
-  const showModal = () => {
+  const handleCreateEqub = () => {
     setOpenModal(true);
-    setModalContent(<ModalContentChild setOpenModal={setOpenModal} refetch={refetch} />);
+    setModalContent(<ModalCreateEqub setOpenModal={setOpenModal} refetch={refetch} />);
   };
 
-  const handleStartClick = (address) => {
+  const handleStartEqub = (address) => {
     setOpenModal(true);
     setModalContent(
-      <ModalContent setOpenModal={setOpenModal} address={address} refetch={refetch} />
+      <ModalStartEqub setOpenModal={setOpenModal} address={address} refetch={refetch} />
     );
   };
 
   return (
-    <div className="h-screen w-full flex justify-center">
+    <div className="h-full w-full flex justify-center">
       <div className="w-3/4 h-full flex flex-col space-y-10 p-10">
         <span className="font-bold text-5xl">Start Your Own Equb</span>
         <span className="font-medium text-2xl text-gray-400">
@@ -288,8 +301,8 @@ const CreateEqub = () => {
           and manage your savings collaboratively.
         </span>
         <button
-          onClick={showModal}
-          className=" border border-black w-4/12 p-5 rounded-md hover:bg-slate-100"
+          onClick={handleCreateEqub}
+          className="border border-black w-4/12 p-5 rounded-md hover:bg-slate-100"
         >
           Create New Equb
         </button>
@@ -312,7 +325,7 @@ const CreateEqub = () => {
                   </span>
                   <button
                     onClick={() => {
-                      handleStartClick(option.equbAddress);
+                      handleStartEqub(option.equbAddress);
                     }}
                     className="border bg-black text-white rounded-md w-2/12 p-2"
                   >

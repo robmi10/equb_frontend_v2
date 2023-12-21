@@ -49,6 +49,7 @@ export const GET_NOT_OWNER_AND_MEMBER_EQUBS = gql`
         contributionAmount
         totalCycleAmtPlayers
         totalEqubAmtPlayers
+        
       }
     }
   }
@@ -72,6 +73,7 @@ query GetJoinedEqubs($member: String!) {
           contributionAmount
           totalCycleAmtPlayers
           totalEqubAmtPlayers
+          currentWeekOrMonth
         }
       }
 `;
@@ -91,6 +93,16 @@ export const GET_OWNER_EQUBS = gql`
           collateralAmount
           durationOfEachPeriod
           totalEqubAmtPlayers
+          currentWeekOrMonth
+          cycleParticipants(
+            where: {participant: $owner}
+          )  {
+            cycleId
+            contributed
+            participant
+            penalties
+            equb
+          }
         }
       }
     `;
@@ -111,7 +123,7 @@ export const GET_EQUBS_INFO = gql`
           timeStamp
           totalMembers
           durationOfEachPeriod
-          cycleEnded
+          allCycleEnded
         }
       }
     `;
@@ -132,19 +144,26 @@ export const GET_MY_INACTIVATED_EQUBS = gql`
         timeStamp
         totalMembers
         durationOfEachPeriod
-        cycleEnded
+        allCycleEnded
       }
     }
   `;
-
+//here
 export const GET_EQUB_DETAILS = gql`
   query GetEqubDetails($equb: String!) {
-    equbs(where: {equbAddress: $equb}) {
+    equbs(where: { equbAddress: $equb }) {
       totalMembers
+      allCycleEnded
       currentWeekOrMonth
       collateralAmount
       contributionAmount
       equbAddress
+      equbEnded
+      cycleStatuses(where: {cycleId: $currentWeekOrMonth}){
+        id
+        isFinished
+        totalCycleAmtPlayers
+      }
       cycleJoins {
         id
         member
@@ -196,9 +215,31 @@ export const GET_EQUB_CYCLE_PARTICIPANTS = gql`
   }
 `
 
+export const GET_EQUB_MEMBERS_INFO = gql`
+  query GetEqubMembers($equb: String!){
+    playerRewardeds(where: {equb: $equb}) {
+        id
+        equb
+        hasBeenRewarded
+        penalties
+        collateral
+        withheldAmount
+        member 
+        winner
+        currentWeek
+        contributionAmount
+      }
+  }
+`
+
 export const GET_EQUB_CYCLE_INFO = gql`
-  query GetCycleInfo($equb: String!, $member: String!){
-    cycleStatuses(where: {equb: $equb}) {
+  query GetCycleInfo($equb: String!, $member: String!, $cycleId: BigInt!){
+    cycleStatuses(where: {
+      and: [
+        { equb: $equb },
+        { cycleId: $cycleId }
+      ]
+    }) {
       id
       winner
       totalCycleAmtPlayers
@@ -214,8 +255,8 @@ export const GET_EQUB_CYCLE_INFO = gql`
         cycleId
         participant
         participatedCycle
-        penalties
+          penalties
+        }
       }
     }
-  }
 `

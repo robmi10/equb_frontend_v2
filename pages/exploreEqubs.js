@@ -5,8 +5,9 @@ import { AiOutlineClose, AiOutlineArrowRight } from 'react-icons/ai';
 import { ethers } from 'ethers';
 import BouncerLoader from '@/components/animation/bouncer';
 import { useQuery } from '@apollo/client';
-import { GET_ALL_EXPLORE_EQUBS, GET_MEMBER_EQUBS, GET_NOT_MEMBER_EQUBS, GET_NOT_OWNER_AND_MEMBER_EQUBS, GET_NOT_OWNER_EQUBS } from '@/components/apollo';
+import { GET_MEMBER_EQUBS, GET_NOT_OWNER_AND_MEMBER_EQUBS } from '@/components/apollo';
 import { useEthers } from '@usedapp/core';
+import Timer from '@/components/helper/timer/timer';
 
 const ModalContent = ({ setOpenModal, props, refetch }) => {
   const { collateralAmount, equbAddress } = props;
@@ -83,7 +84,10 @@ const ExploreEqubs = () => {
     // Check if equbsIsMember contains an item with the same id as the current item
     const isMember = equbsIsMember.some(member => member.equb.equbAddress === item.equb.equbAddress);
     if (!isMember) {
-      acc.push(item.equb);
+      const isDuplicate = acc.some(equb => equb.id === item.equb.id);
+      if (!isDuplicate && !item.equb.equbEnded) {
+        acc.push(item.equb);
+      }
     }
     return acc;
   }, []);
@@ -108,23 +112,16 @@ const ExploreEqubs = () => {
     setSearchFilter(e.target.value);
   };
 
-  const getDate = (timeStamp) => {
-    const unixTimestamp = timeStamp;
-    const date = new Date(unixTimestamp * 1000); // Multiply by 1000 to convert seconds to milliseconds
+  const checkIfDeadlinIsPassed = (deadline) => {
+    const currentTime = new Date().getTime(); // Get current time in milliseconds
 
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1; // Months are zero-based, so add 1
-    const day = date.getDate();
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const seconds = date.getSeconds();
-
-    return `${year}-${month.toString().padStart(2, '0')}-${day
-      .toString()
-      .padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes
-        .toString()
-        .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  };
+    if (currentTime > deadline * 1000) {
+      return false
+    }
+    else {
+      return true
+    }
+  }
 
   return (
     <div className="h-full w-full flex justify-center">
@@ -186,28 +183,26 @@ const ExploreEqubs = () => {
                           </span>
                         </div>
 
-                        <div className="flex flex-col gap-2">
-                          <span className="w-36 font-bold  ">Equb Length</span>
+
+                        {!checkIfDeadlinIsPassed(Number(option.joinCycleDeadline)) && <div className="flex flex-col gap-2">
+                          <span className="w-36 font-bold mt-4">Equb Length</span>
                           <span >
-                            {getDate(
-                              option.durationOfEachPeriod,
-                              option.totalMembers,
-                            )}
+                            <Timer countDownTimeMs={option.equbLength} hide={true} />
                           </span>
-                        </div>
+                        </div>}
 
                         <div className="flex flex-col gap-2">
                           <span className="w-42 font-bold  ">
                             Contribution Amount
                           </span>
-                          <div>
+                          <div className='flex gap-1'>
                             <span>
                               {ethers.utils.formatUnits(
                                 option.contributionAmount,
                                 'ether',
                               )}
                             </span>
-                            MATIC
+                            <span>MATIC</span>
                           </div>
                         </div>
 
@@ -215,14 +210,14 @@ const ExploreEqubs = () => {
                           <span className="w-36 font-bold  ">
                             Collateral Amount
                           </span>
-                          <div>
+                          <div >
                             <span className="w-36 ">
                               {ethers.utils.formatUnits(
                                 option.collateralAmount,
                                 'ether',
                               )}
                             </span>
-                            MATIC
+                            <span className='ml-1'>MATIC</span>
                           </div>
                         </div>
                       </div>

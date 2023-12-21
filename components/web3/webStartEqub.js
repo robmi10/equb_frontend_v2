@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { useEthers, useContractFunction } from "@usedapp/core";
+import { useContractFunction } from "@usedapp/core";
 import equbInfo from "../../ABI_ADDRESS/Equb/EqubABI.json";
 import { ethers } from "ethers";
 import { EqubContext } from "../context/context";
@@ -27,8 +27,9 @@ const WebStartEqub = (EQUB_ADDRES, refetch) => {
     if (startEqubStatus.status === "Success" && !toastNotification) {
       setLoader(false);
       setOpenModal(false);
-      setToastNotifcation({ title: "Equb", desc: "Equb started", status: "success" });
-      console.log("toastNotification -> ", toastNotification)
+      let owner = startEqubEvents[0].args._owner
+      console.log("startEqubEvents[0].args ->", startEqubEvents[0].args)
+      setToastNotifcation({ title: "Equb", desc: `Equb has been started by ${owner?.toString()?.substr(0, 15)}`, status: "success" });
       refetch();
     }
   });

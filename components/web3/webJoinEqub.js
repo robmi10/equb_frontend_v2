@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { useEthers, useContractFunction } from "@usedapp/core";
+import { useContractFunction } from "@usedapp/core";
 import equbInfo from "../../ABI_ADDRESS/Equb/EqubABI.json";
 import { ethers } from "ethers";
 import { EqubContext } from "../context/context";
@@ -18,11 +18,13 @@ const WebJoinEqub = (EQUB_ADDRES, refetch) => {
   const {
     state: joinEqubStatus,
     send: joinEqubExecute,
+    events: joinEqubEvents
   } = useContractFunction(equbAddressContract, "joinEqub");
 
   const doRefetch = async () => {
     try {
       for (const refetchFn of refetch) {
+        console.log("inside refetch ->", refetchFn)
         await refetchFn();
       }
     } catch (error) {
@@ -48,13 +50,16 @@ const WebJoinEqub = (EQUB_ADDRES, refetch) => {
       setLoader(true);
     }
     if (joinEqubStatus.status === "Error") {
+      let member = joinEqubEvents[0].args._member
       setLoader(true);
-      setToastNotifcation({ title: "Error", desc: `${address} got error joining equb`, status: "error" });
+      setToastNotifcation({ title: "Error", desc: `${member} got error joining equb`, status: "error" });
     }
     if (joinEqubStatus.status === "Success") {
+      let member = joinEqubEvents[0].args._member
+      let cycleIndex = joinEqubEvents[0].args._cycleIndex
       setLoader(false);
       setOpenModal(false);
-      setToastNotifcation({ title: "Equb", desc: `${address} joined equb`, status: "success" });
+      setToastNotifcation({ title: "Equb", desc: `${member?.toString()?.substr(0, 15)} joined equb ${cycleIndex}-cycle`, status: "success" });
       doRefetch()
     }
   });

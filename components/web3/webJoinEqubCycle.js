@@ -9,10 +9,7 @@ import handleMsgError from "../helper/errorMsg";
 const WebJoinEqubCycle = (EQUB_ADDRES, refetch) => {
     const { address, setLoader, setOpenModal, setToastNotifcation } =
         useContext(EqubContext);
-
-    console.log({ EQUB_ADDRES })
     const equbFactoryInterface = new ethers.utils.Interface(equbInfo);
-
     const equbAddressContract = new Contract(EQUB_ADDRES, equbFactoryInterface);
 
     const {
@@ -49,10 +46,12 @@ const WebJoinEqubCycle = (EQUB_ADDRES, refetch) => {
             setLoader(true);
         }
         if (joinEqubCycleStatus.status === "Error") {
+            console.log("joinEqubCycleStatus ->", joinEqubCycleStatus)
             setLoader(true);
             setToastNotifcation({ title: "Error", desc: `${address} got error joining cycle`, status: "error" });
         }
         if (joinEqubCycleStatus.status === "Success") {
+            console.log("joinEqubCycleStatus ->", joinEqubCycleStatus)
             setLoader(false);
             setOpenModal(false);
             setToastNotifcation({ title: "Cycle", desc: `${address} joined cycle`, status: "success" });

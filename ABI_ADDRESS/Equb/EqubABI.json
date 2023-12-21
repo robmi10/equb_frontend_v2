@@ -169,6 +169,24 @@
         "internalType": "uint256",
         "name": "_cycleIndex",
         "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "bool",
+        "name": "_allCycleEnded",
+        "type": "bool"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_endTimeStamp",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_joinCycleDeadline",
+        "type": "uint256"
       }
     ],
     "name": "AdvanceToNextCycle",
@@ -470,6 +488,12 @@
         "internalType": "bool",
         "name": "_isCycleClosed",
         "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_totalSum",
+        "type": "uint256"
       }
     ],
     "name": "MemberJoinedCycle",
@@ -545,6 +569,30 @@
         "internalType": "uint256",
         "name": "penalties",
         "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "bool",
+        "name": "hasJoined",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "membersLength",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_cycleIndex",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "contributionAmount",
+        "type": "uint256"
       }
     ],
     "name": "PenalizedMember",
@@ -582,6 +630,18 @@
         "internalType": "uint256",
         "name": "penalties",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_cycleIndex",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "contributionAmount",
+        "type": "uint256"
       }
     ],
     "name": "PlayerRewarded",
@@ -605,6 +665,19 @@
     ],
     "name": "RequestIdWinner",
     "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "allCycleEnded",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [
@@ -696,19 +769,6 @@
         "internalType": "address",
         "name": "",
         "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "cycleEnded",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
       }
     ],
     "stateMutability": "view",

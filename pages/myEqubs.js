@@ -6,15 +6,12 @@ import { useEthers } from "@usedapp/core";
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import { HiSignal } from 'react-icons/hi2';
 import { AiOutlineClose } from 'react-icons/ai';
-
-
 import BouncerLoader from '@/components/animation/bouncer';
 import { EqubContext } from '@/components/context/context';
 import WebJoinEqub from '@/components/web3/webJoinEqub';
 
-const ModalContent = ({ setOpenModal, props, refetch }) => {
+const ModalJoinEqub = ({ setOpenModal, props, refetch }) => {
   const { collateralAmount, equbAddress } = props
-
   const { useJoinEqub } = WebJoinEqub(equbAddress, refetch);
   const { loader } = useContext(EqubContext);
 
@@ -64,17 +61,12 @@ const MyEqubs = () => {
 
 
   if (!account) return false
-  console.log({ account })
   const { data: myEqubs, loading: myEqubsLoading, error: myEqubsError, refetch: refetchEqubQuery } = useQuery(GET_OWNER_EQUBS, {
     variables: { owner: account }, fetchPolicy: 'network-only',
   });
   const { data: joinedEqubs, loading: joinedEqubsLoading, error: joinedEqubsError, refetch: refetchJoinedEqubQuery } = useQuery(GET_JOINED_EQUBS, {
     variables: { member: account }, fetchPolicy: 'network-only',
   });
-
-  console.log({ joinedEqubsError })
-
-  console.log({ myEqubsError })
 
   if (myEqubsError || joinedEqubsError) return <> <p> Error...</p></>
 
@@ -85,19 +77,16 @@ const MyEqubs = () => {
       </div>
     );
 
-  console.log("GET_JOINED_EQUBS ->", joinedEqubs)
-
-  const handleStartClick = (option) => {
+  const handleJoinEqub = (option) => {
     setOpenModal(true);
     setModalContent(
-      <ModalContent setOpenModal={setOpenModal} props={option} refetch={[refetchEqubQuery, refetchJoinedEqubQuery]} />,
+      <ModalJoinEqub setOpenModal={setOpenModal} props={option} refetch={[refetchEqubQuery, refetchJoinedEqubQuery]} />,
     );
   };
   const { equbs: myEqubList } = myEqubs
   const { equbs: joinedEqubList } = joinedEqubs
 
-  console.log({ myEqubList })
-  console.log({ joinedEqubList })
+  console.log("filteredMyEqubs ->", myEqubList)
 
   return (
     <div className="h-full w-full flex justify-center">
@@ -171,11 +160,18 @@ const MyEqubs = () => {
                       </div>
 
 
-                      <button className="border pt-2 border-black hover:bg-slate-100 w-2/12 p-2 flex justify-center"
-                        onClick={() => { handleStartClick(option) }}
+                      {option.cycleParticipants.length > 0 ? <Link href="/equb/[equbaddress]" as={`/equb/${option.equbAddress}`}
+                        className=" w-2/12 p-2 flex justify-center"
+                      >
+                        <div className="flex items-center gap-2 w-full justify-between hover:border-b">
+                          <span> GO TO EQUB</span>
+                          <AiOutlineArrowRight />
+                        </div>
+                      </Link> : <button className="border pt-2 border-black hover:bg-slate-100 w-2/12 p-2 flex justify-center"
+                        onClick={() => { handleJoinEqub(option) }}
                       >
                         JOIN EQUB
-                      </button>
+                      </button>}
 
                     </div>
                   </div>
@@ -256,7 +252,6 @@ const MyEqubs = () => {
           })}
         </div>}
       </div>
-
     </div>
   )
 }
