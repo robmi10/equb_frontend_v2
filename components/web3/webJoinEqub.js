@@ -56,10 +56,9 @@ const WebJoinEqub = (EQUB_ADDRES, refetch) => {
     }
     if (joinEqubStatus.status === "Success") {
       let member = joinEqubEvents[0].args._member
-      let cycleIndex = joinEqubEvents[0].args._cycleIndex
       setLoader(false);
       setOpenModal(false);
-      setToastNotifcation({ title: "Equb", desc: `${member?.toString()?.substr(0, 15)} joined equb ${cycleIndex}-cycle`, status: "success" });
+      setToastNotifcation({ title: "Equb", desc: `${member?.toString()?.substr(0, 15)} joined equb`, status: "success" });
       doRefetch()
     }
   });

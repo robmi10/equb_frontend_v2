@@ -160,7 +160,7 @@ const MyEqubs = () => {
                       </div>
 
 
-                      {option.cycleParticipants.length > 0 ? <Link href="/equb/[equbaddress]" as={`/equb/${option.equbAddress}`}
+                      {option.cycleMemberInfos.length > 0 ? <Link href="/equb/[equbaddress]" as={`/equb/${option.equbAddress}`}
                         className=" w-2/12 p-2 flex justify-center"
                       >
                         <div className="flex items-center gap-2 w-full justify-between hover:border-b">

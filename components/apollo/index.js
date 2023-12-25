@@ -94,14 +94,11 @@ export const GET_OWNER_EQUBS = gql`
           durationOfEachPeriod
           totalEqubAmtPlayers
           currentWeekOrMonth
-          cycleParticipants(
-            where: {participant: $owner}
-          )  {
-            cycleId
-            contributed
-            participant
-            penalties
-            equb
+          cycleMemberInfos(where: {member: $owner}) {
+            id
+            isPlaying
+            member
+            owner
           }
         }
       }

@@ -15,6 +15,7 @@ const WebJoinEqubCycle = (EQUB_ADDRES, refetch) => {
     const {
         state: joinEqubCycleStatus,
         send: joinEqubCycleExecute,
+        events: joinEqubCycleEvents
     } = useContractFunction(equbAddressContract, "joinAndContributeCycle");
 
     const doRefetch = async () => {
@@ -46,15 +47,16 @@ const WebJoinEqubCycle = (EQUB_ADDRES, refetch) => {
             setLoader(true);
         }
         if (joinEqubCycleStatus.status === "Error") {
-            console.log("joinEqubCycleStatus ->", joinEqubCycleStatus)
             setLoader(true);
             setToastNotifcation({ title: "Error", desc: `${address} got error joining cycle`, status: "error" });
         }
         if (joinEqubCycleStatus.status === "Success") {
-            console.log("joinEqubCycleStatus ->", joinEqubCycleStatus)
+            let cycleIndex = joinEqubCycleEvents[0].args._cycleIndex
+            let member = joinEqubCycleEvents[0].args._member
+
             setLoader(false);
             setOpenModal(false);
-            setToastNotifcation({ title: "Cycle", desc: `${address} joined cycle`, status: "success" });
+            setToastNotifcation({ title: "Cycle", desc: `${member?.toString()?.substr(0, 15)} joined ${cycleIndex}th-cycle`, status: "success" });
             doRefetch()
         }
     });

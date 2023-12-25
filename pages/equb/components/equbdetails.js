@@ -2,7 +2,7 @@ import BouncerLoader from '@/components/animation/bouncer';
 import { GET_EQUB_CYCLE_INFO, GET_EQUB_CYCLE_PARTICIPANTS, GET_EQUB_DETAILS, GET_EQUB_MEMBERS_INFO } from '@/components/apollo';
 import { EqubContext } from '@/components/context/context';
 import { useQuery } from '@apollo/client';
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { AiOutlineClose } from 'react-icons/ai';
 import { HiSignal } from 'react-icons/hi2';
 import { AiFillCheckCircle, AiFillCloseCircle } from 'react-icons/ai';
@@ -11,6 +11,7 @@ import WebJoinEqubCycle from '@/components/web3/webJoinEqubCycle';
 import Timer from '@/components/helper/timer/timer';
 import { useEthers } from '@usedapp/core';
 import WebEndEqub from '@/components/web3/webEndEqub';
+import { EqubCycleItem } from './equbtimecheck';
 
 const ModalContentEndEqub = ({ setOpenModal, props, refetch }) => {
     const { equbAddress } = props
@@ -110,6 +111,8 @@ const ModalContentJoinEqub = ({ setOpenModal, props, refetch }) => {
     );
 };
 
+
+
 const Equb = ({ ...props }) => {
     const { setOpenModal, setModalContent } =
         useContext(EqubContext);
@@ -124,27 +127,18 @@ const Equb = ({ ...props }) => {
         variables: { equb: equbAddress, member: account, cycleId: cycleId },
     });
 
-    const { data: equbDetailsParticipantsQuery, loading: equbDetailsParticipantsIsLoading, error: equbDetailsParticipantsQueryError, refetch: refetchEqubDetailsParticipantsQuery } = useQuery(GET_EQUB_CYCLE_PARTICIPANTS, {
-        variables: { equb: equbAddress },
-    });
-
     const { data: equbMembersQuery, loading: equbMembersIsLoading, error: equbMembersQueryError, refetch: refetchEqubMembersQuery } = useQuery(GET_EQUB_MEMBERS_INFO, {
         variables: { equb: equbAddress },
     });
 
-
-    const checkIfDeadlinIsPassed = (deadline) => {
-        const currentTime = new Date().getTime(); // Get current time in milliseconds
-
-        if (currentTime > deadline * 1000) {
-            return false
-        }
-        else {
-            return true
+    const runRefetches = async () => {
+        for (const refetchFn of [refetchEqubDetailsQuery, refetchEqubCycleQuery, refetchEqubMembersQuery]) {
+            console.log("inside run refetches")
+            await refetchFn();
         }
     }
 
-    if (equbCycleError) return <> <p> Error...</p></>
+    if (equbCycleError || equbMembersQueryError || equbDetailsQueryError) return <> <p> Error...</p></>
     if (equbQueryDetailsIsLoading || equbCycleIsLoading || equbMembersIsLoading)
         return (
             <div className='h-screen flex justify-center items-center'>
@@ -168,14 +162,14 @@ const Equb = ({ ...props }) => {
     const handleEndEqub = (option) => {
         setOpenModal(true);
         setModalContent(
-            <ModalContentEndEqub setOpenModal={setOpenModal} props={option} refetch={[refetchEqubCycleQuery, refetchEqubDetailsParticipantsQuery, refetchEqubDetailsQuery]} />
+            <ModalContentEndEqub setOpenModal={setOpenModal} props={option} refetch={[refetchEqubCycleQuery, refetchEqubDetailsQuery, refetchEqubMembersQuery]} />
         );
     };
 
     const handleJoinEqub = (option) => {
         setOpenModal(true);
         setModalContent(
-            <ModalContentJoinEqub setOpenModal={setOpenModal} props={option} refetch={[refetchEqubCycleQuery, refetchEqubDetailsParticipantsQuery, refetchEqubDetailsQuery]} />
+            <ModalContentJoinEqub setOpenModal={setOpenModal} props={option} refetch={[refetchEqubCycleQuery, refetchEqubDetailsQuery, refetchEqubMembersQuery]} />
         );
     };
 
@@ -277,8 +271,7 @@ const Equb = ({ ...props }) => {
                                                             NEXT CYCLE
                                                         </label>
                                                         <span>
-                                                            {checkIfDeadlinIsPassed(Number(option.joinCycleDeadline)) ? <Timer countDownTimeMs={Number(option.endTimeStamp)} /> : "-"}
-                                                        </span>
+                                                            <EqubCycleItem refetch={[refetchEqubCycleQuery, refetchEqubDetailsQuery, refetchEqubMembersQuery]} time={option.endTimeStamp} />                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>}
@@ -317,12 +310,12 @@ const Equb = ({ ...props }) => {
                                         <div className="gap-8">
                                             {<div key={index}>
                                                 <div className='w-full justify-between flex'>
-                                                    {checkIfDeadlinIsPassed(Number(option.joinCycleDeadline)) && <div className="gap-3 flex flex-col">
+                                                    {<div className="gap-3 flex flex-col">
                                                         <label className="font-bold">
                                                             DEADLINE
                                                         </label>
                                                         <span >
-                                                            {<Timer countDownTimeMs={Number(option.joinCycleDeadline)} hide={true} />}
+                                                            <EqubCycleItem refetch={[refetchEqubCycleQuery, refetchEqubDetailsQuery, refetchEqubMembersQuery]} time={option.joinCycleDeadline} hide={true} />
                                                         </span>
                                                     </div>}
                                                     {option.totalSum && <div className="gap-2 flex flex-col">
@@ -349,9 +342,7 @@ const Equb = ({ ...props }) => {
                                                         <label className="font-bold">
                                                             STARTED
                                                         </label>
-                                                        <span >
-                                                            {checkIfDeadlinIsPassed(Number(option.joinCycleDeadline)) ? <AiFillCheckCircle color='green' size={20} /> : <AiFillCloseCircle color='red' size={20} />}
-                                                        </span>
+                                                        <EqubCycleItem refetch={[refetchEqubCycleQuery, refetchEqubDetailsQuery, refetchEqubMembersQuery]} time={option.startTimeStamp} check={true} />
                                                     </div>
                                                     {!option.participants.length > 0 && <div className="flex pt-1 justify-start">
                                                         <button className="border pt-2 border-black hover:bg-slate-100 w-full h-12 p-2 flex items-center justify-center"
