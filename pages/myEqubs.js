@@ -86,8 +86,6 @@ const MyEqubs = () => {
   const { equbs: myEqubList } = myEqubs
   const { equbs: joinedEqubList } = joinedEqubs
 
-  console.log("filteredMyEqubs ->", myEqubList)
-
   return (
     <div className="h-full w-full flex justify-center">
       <div className="md:w-3/4 h-full flex flex-col space-y-5 p-10">
