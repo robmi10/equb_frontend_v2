@@ -28,7 +28,7 @@ export default function Layout({ children }) {
             />
           </div>
         )}
-        <div>
+        <div className="mt-48 md:mt-0">
           <Footer />
         </div>
       </div>

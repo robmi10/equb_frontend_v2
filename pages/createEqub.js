@@ -100,7 +100,7 @@ const ModalCreateEqub = ({ setOpenModal, refetch }) => {
   };
 
   return (
-    <div className="bg-white w-3/4 h-3/4 flex justify-center p-12 mt-4 rounded-md flex-col gap-4">
+    <div className="bg-white md:w-3/4 overflow-auto h-4/5 md:h-3/4 md:flex justify-center p-4 md:p-12 md:mt-4 rounded-md flex-col gap-4">
       <div className="flex justify-between items-center">
         <span className="text-2xl font-medium">CREATE EQUB</span>
         <button onClick={() => setOpenModal(false)}>
@@ -108,8 +108,8 @@ const ModalCreateEqub = ({ setOpenModal, refetch }) => {
         </button>
       </div>
       <form onSubmit={handleSubmit} >
-        <div className="grid grid-cols-2 gap-4">
-          <div className="mb-4">
+        <div className="grid md:grid-cols-2 md:gap-4">
+          <div className="mb-4 mt-4 md:mt-0">
             <label
               htmlFor="members"
               className="block text-lg font-medium text-gray-700"
@@ -294,15 +294,15 @@ const CreateEqub = () => {
 
   return (
     <div className="h-full w-full flex justify-center">
-      <div className="w-3/4 h-full flex flex-col space-y-10 p-10">
-        <span className="font-bold text-5xl">Start Your Own Equb</span>
+      <div className="md:w-3/4 h-full flex flex-col space-y-10 p-10">
+        <span className="text-4xl font-bold md:text-5xl">Start Your Own Equb</span>
         <span className="font-medium text-2xl text-gray-400">
           Creating an equb is straightforward. Set your terms, invite members,
           and manage your savings collaboratively.
         </span>
         <button
           onClick={handleCreateEqub}
-          className="border border-black w-4/12 p-5 rounded-md hover:bg-slate-100"
+          className="border border-black md:w-4/12 p-5 rounded-md hover:bg-slate-100"
         >
           Create New Equb
         </button>

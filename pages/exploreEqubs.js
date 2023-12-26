@@ -20,19 +20,19 @@ const ModalContent = ({ setOpenModal, props, refetch }) => {
   };
 
   return (
-    <div className="bg-white w-5/12 h-4/12 flex justify-center p-11 mt-4 rounded-md flex-col gap-4">
+    <div className="bg-white md:w-5/12 h-4/12 flex justify-center p-11 mt-4 rounded-md flex-col gap-4">
       <button onClick={() => setOpenModal(false)}>
         <AiOutlineClose />
       </button>
       <div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2 md:gap-1">
           <p>Do you want to join the equb with address</p>
           <p className=" font-bold">{equbAddress.toString().substr(0, 14)}?</p>
         </div>
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between flex-col md:flex-row gap-4 md:gap-0">
         <button
-          className="border flex justify-center items-center border-black w-48 h-12 rounded-md hover:bg-slate-100"
+          className="border flex justify-center items-center border-black md:w-48 h-12 rounded-md hover:bg-slate-100"
           onClick={() => {
             setOpenModal(false);
           }}
@@ -40,7 +40,7 @@ const ModalContent = ({ setOpenModal, props, refetch }) => {
           CANCEL
         </button>
         <button
-          className="border flex justify-center items-center border-black w-48 h-12 rounded-md hover:bg-slate-100"
+          className="border flex justify-center items-center border-black md:w-48 h-12 rounded-md hover:bg-slate-100"
           onClick={() => {
             handleSubmit();
           }}
@@ -125,8 +125,8 @@ const ExploreEqubs = () => {
 
   return (
     <div className="h-full w-full flex justify-center">
-      <div className="w-3/4 h-full flex flex-col space-y-10 p-10 ">
-        <div className="flex flex-col space-y-5 w-3/4  mb-12 ">
+      <div className="md:w-3/4 h-full flex flex-col space-y-10 p-10 ">
+        <div className="flex flex-col space-y-5 md:w-3/4  mb-12 ">
           <span className="font-bold text-4xl">Explore Equbs</span>
           <span className="font-medium text-3xl">
             Discover various Equbs tailored to different preferences and needs.
@@ -165,7 +165,7 @@ const ExploreEqubs = () => {
                 <div className="gap-8">
                   {option.equbStarted && (
                     <div key={index}>
-                      <div className="w-full justify-between flex items-center border p-5 rounded-md">
+                      <div className="w-full gap-4 justify-between flex flex-col md:flex-row md:items-center border p-5 rounded-md">
                         <div className="flex flex-col gap-2">
                           <span className="w-36 font-bold  ">Equb Address</span>
 
@@ -222,7 +222,7 @@ const ExploreEqubs = () => {
                         </div>
                       </div>
                       <div class="flex justify-end mb-4">
-                        <button className="border-b pt-2 border-black w-1/6 p-2 flex justify-center items-center gap-4"
+                        <button className="border-b pt-2 border-black md:w-1/6 p-2 flex justify-center items-center gap-4"
                           onClick={() => { handleStartClick(option) }}
                         >
                           <p>JOIN EQUB</p>

@@ -38,9 +38,9 @@ const ModalContentEndEqub = ({ setOpenModal, props, refetch }) => {
                     <p >Are you sure you wan't to end the equb?</p>
                 </div>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between flex-col md:flex-row gap-4 md:gap-4">
                 <button
-                    className="border flex justify-center items-center border-black w-48 h-12 rounded-md hover:bg-slate-100"
+                    className="border flex justify-center items-center border-black md:w-48 h-12 rounded-md hover:bg-slate-100"
                     onClick={() => {
                         setOpenModal(false);
                     }}
@@ -48,7 +48,7 @@ const ModalContentEndEqub = ({ setOpenModal, props, refetch }) => {
                     CANCEL
                 </button>
                 <button
-                    className="border flex justify-center items-center border-black w-48 h-12 rounded-md hover:bg-slate-100"
+                    className="border flex justify-center items-center border-black md:w-48 h-12 rounded-md hover:bg-slate-100"
                     onClick={() => {
                         handleSubmit();
                     }}
@@ -78,7 +78,7 @@ const ModalContentJoinEqub = ({ setOpenModal, props, refetch }) => {
     };
 
     return (
-        <div className="bg-white w-5/12 h-4/12 flex justify-center p-11 mt-4 rounded-md flex-col gap-4">
+        <div className="bg-white md:w-5/12 h-4/12 flex justify-center p-11 mt-4 rounded-md flex-col gap-4">
             <button onClick={() => setOpenModal(false)}>
                 <AiOutlineClose />
             </button>
@@ -87,9 +87,9 @@ const ModalContentJoinEqub = ({ setOpenModal, props, refetch }) => {
                     <p >Are you sure to join the current cycle?</p>
                 </div>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between flex-col md:flex-row gap-4 md:gap-4">
                 <button
-                    className="border flex justify-center items-center border-black w-48 h-12 rounded-md hover:bg-slate-100"
+                    className="border flex justify-center items-center border-black md:w-48 h-12 rounded-md hover:bg-slate-100"
                     onClick={() => {
                         setOpenModal(false);
                     }}
@@ -97,7 +97,7 @@ const ModalContentJoinEqub = ({ setOpenModal, props, refetch }) => {
                     CANCEL
                 </button>
                 <button
-                    className="border flex justify-center items-center border-black w-48 h-12 rounded-md hover:bg-slate-100"
+                    className="border flex justify-center items-center border-black md:w-48 h-12 rounded-md hover:bg-slate-100"
                     onClick={() => {
                         handleSubmit();
                     }}
@@ -192,13 +192,13 @@ const Equb = ({ ...props }) => {
     const playerRewardsAndPenaltiesList = Object.values(playerRewardsAndPenalties);
     return (
         <>
-            <div className="h-full   w-full flex justify-center">
-                <div className="w-3/4 h-full flex flex-col space-y-10 p-10">
-                    <span className=" text-4xl font-semibold"> Equb Details</span>
+            <div className="h-full  w-full flex justify-center">
+                <div className="md:w-3/4 h-full flex flex-col space-y-10 p-10">
+                    <span className="text-4xl font-semibold"> Equb Details</span>
                     <span className="text-3xl font-medium">A dedicated space to view and manage your Equb details</span>
 
-                    {equbsDetail?.length > 0 && equbsCycle?.length > 0 && <div className="gap-8 flex flex-row">
-                        <div className="border rounded-md p-4 w-1/2 gap-4 flex flex-col">
+                    {equbsDetail?.length > 0 && equbsCycle?.length > 0 && <div className="gap-8 flex flex-col md:flex-row">
+                        <div className="border rounded-md p-4 md:w-1/2 gap-4 flex flex-col">
                             {equbsDetail?.length > 0 && <span className="text-2xl font-medium">STATUS</span>}
                             {<div >
                                 {equbsDetail.map((option, index) => {
@@ -229,7 +229,7 @@ const Equb = ({ ...props }) => {
                                                             ENDED
                                                         </label>
                                                         <span >
-                                                            {option.allCycleEnded ? <HiSignal color='green' size={20} /> : option.cycleJoins[option.currentWeekOrMonth]?.hasJoined ? <HiSignal color='yellow' size={20} /> : <HiSignal color='red' size={20} />}
+                                                            {option.equbEnded ? <HiSignal color='green' size={20} /> : option.cycleJoins[option.currentWeekOrMonth]?.hasJoined ? <HiSignal color='yellow' size={20} /> : <HiSignal color='red' size={20} />}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -240,7 +240,7 @@ const Equb = ({ ...props }) => {
                             </div>}
                         </div>
 
-                        <div className="border rounded-md p-4 w-1/2 gap-4 flex flex-col">
+                        <div className="border rounded-md p-4 md:w-1/2 gap-4 flex flex-col">
                             {equbsCycle?.length > 0 && <span className="text-2xl font-medium">FINANCIAL DETAILS</span>}
                             {<div>
                                 {equbsCycle.map((option, index) => {
@@ -309,7 +309,7 @@ const Equb = ({ ...props }) => {
                                     return (
                                         <div className="gap-8">
                                             {<div key={index}>
-                                                <div className='w-full justify-between flex'>
+                                                <div className='w-full justify-between flex flex-col md:flex-row'>
                                                     {<div className="gap-3 flex flex-col">
                                                         <label className="font-bold">
                                                             DEADLINE
@@ -367,7 +367,7 @@ const Equb = ({ ...props }) => {
                                     return (
                                         <div className="gap-8">
                                             {<div key={index}>
-                                                <div className='w-full justify-between flex items-center border p-4'>
+                                                <div className='w-full justify-between flex flex-col md:flex-row md:items-center border p-4 gap-4 md:gap-0'>
 
                                                     <div className="gap-2 flex flex-col">
                                                         <label className="w-42 font-bold">
@@ -390,7 +390,7 @@ const Equb = ({ ...props }) => {
                                                         <label className="font-bold">
                                                             REWARDED
                                                         </label>
-                                                        <span className="w-full flex justify-center">
+                                                        <span className="w-full flex md:justify-center">
                                                             {option.hasBeenRewarded ? <AiFillCheckCircle color='green' size={20} /> : <AiFillCloseCircle color='red' size={20} />}
 
                                                         </span>
@@ -410,7 +410,7 @@ const Equb = ({ ...props }) => {
                                                         <label className="font-bold">
                                                             ELIMINATED
                                                         </label>
-                                                        <span className="w-full flex justify-center">
+                                                        <span className="w-full flex md:justify-center">
                                                             {option.penalties >= 2 ? <AiFillCheckCircle color='green' size={20} /> : <AiFillCloseCircle color='red' size={20} />}
 
                                                         </span>

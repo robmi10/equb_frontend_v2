@@ -6,7 +6,7 @@ export const Footer = () => {
 
     return (
         <div className="flex justify-center pt-96">
-            <div className='flex flex-row w-3/4 p-12 justify-around h-64'>
+            <div className='flex flex-row w-3/4 p-12 justify-around md:h-64'>
                 <HiMiniUserGroup />
                 <div className="flex p-2 flex-col gap-4">
                     <span className='font-bold'>

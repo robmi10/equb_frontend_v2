@@ -14,6 +14,7 @@ const EqubProvider = ({ children }) => {
   const [toastNotification, setToastNotifcation] = useState(false);
   const [ownerEqubAddress, setOwnerEqubAddress] = useState(false);
   const [allEqubs, setAllEqubs] = useState(false);
+  const [modal, setModal] = useState(false);
 
   const closeModal = () => {
     setOpenModal(false);
@@ -41,7 +42,8 @@ const EqubProvider = ({ children }) => {
         setToastNotifcation,
         ownerEqubAddress,
         setOwnerEqubAddress,
-        allEqubs, setAllEqubs
+        allEqubs, setAllEqubs,
+        modal, setModal
       }}
     >
       {children}

@@ -90,8 +90,8 @@ const MyEqubs = () => {
 
   return (
     <div className="h-full w-full flex justify-center">
-      <div className="w-3/4 h-full flex flex-col space-y-5 p-10">
-        <div className='flex flex-col space-y-5 w-3/4  mb-12'>
+      <div className="md:w-3/4 h-full flex flex-col space-y-5 p-10">
+        <div className='flex flex-col space-y-5 md:w-3/4  mb-12'>
 
           <span className="font-bold text-4xl">MyEqub Dashboard</span>
           <span className="font-medium text-3xl">
@@ -112,9 +112,9 @@ const MyEqubs = () => {
               <div>
                 {
                   <div key={index}>
-                    <div className='w-full justify-between h-14 flex items-center p-12 border'>
+                    <div className='w-full justify-between md:h-14 flex flex-col md:flex-row md:items-center p-12 border gap-4'>
                       <div className="flex flex-col justify-between h-14 gap-2">
-                        <span className="w-36 font-bold">
+                        <span className="md:w-36 font-bold">
                           EQUB
                         </span>
 
@@ -132,7 +132,7 @@ const MyEqubs = () => {
                         </span>
                       </div>
 
-                      <div className="flex flex-col gap-2 justify-between h-14 items-center">
+                      <div className="flex flex-col gap-2 justify-between h-14 md:items-center">
                         <span className="font-bold">
                           MEMBERS
                         </span>
@@ -141,7 +141,7 @@ const MyEqubs = () => {
                         </span>
                       </div>
 
-                      <div className="flex flex-col items-center justify-between h-14">
+                      <div className="flex flex-col md:items-center justify-between h-14">
                         <span className="font-bold ">
                           STARTED
                         </span>
@@ -150,7 +150,7 @@ const MyEqubs = () => {
                         </span>
                       </div>
 
-                      <div className="flex flex-col items-center justify-between h-14">
+                      <div className="flex flex-col md:items-center justify-between h-14">
                         <span className="font-bold ">
                           ENDED
                         </span>
@@ -161,7 +161,7 @@ const MyEqubs = () => {
 
 
                       {option.cycleMemberInfos.length > 0 ? <Link href="/equb/[equbaddress]" as={`/equb/${option.equbAddress}`}
-                        className=" w-2/12 p-2 flex justify-center"
+                        className="md:w-2/12 md:p-2 flex justify-center"
                       >
                         <div className="flex items-center gap-2 w-full justify-between hover:border-b">
                           <span> GO TO EQUB</span>
@@ -188,7 +188,7 @@ const MyEqubs = () => {
               <div>
                 {
                   <div key={index}>
-                    <div className='w-full justify-between h-14 flex items-center p-12 border'>
+                    <div className='w-full justify-between md:h-14 flex flex-col md:flex-row md:items-center p-12 border gap-4'>
                       <div className="flex flex-col justify-between h-14 gap-2">
                         <span className="w-36 font-bold">
                           EQUB
@@ -208,7 +208,7 @@ const MyEqubs = () => {
                         </span>
                       </div>
 
-                      <div className="flex flex-col gap-2 justify-between h-14 items-center">
+                      <div className="flex flex-col gap-2 justify-between h-14 md:items-center">
                         <span className="font-bold">
                           MEMBERS
                         </span>
@@ -217,7 +217,7 @@ const MyEqubs = () => {
                         </span>
                       </div>
 
-                      <div className="flex flex-col items-center justify-between h-14">
+                      <div className="flex flex-col md:items-center justify-between h-14">
                         <span className="font-bold ">
                           STARTED
                         </span>
@@ -226,7 +226,7 @@ const MyEqubs = () => {
                         </span>
                       </div>
 
-                      <div className="flex flex-col items-center justify-between h-14">
+                      <div className="flex flex-col md:items-center justify-between h-14">
                         <span className="font-bold ">
                           ENDED
                         </span>
@@ -236,7 +236,7 @@ const MyEqubs = () => {
                       </div>
 
                       <Link href="/equb/[equbaddress]" as={`/equb/${option.equbAddress}`}
-                        className=" w-2/12 p-2 flex justify-center"
+                        className="md:w-2/12 md:p-2 flex justify-center"
                       >
                         <div className="flex items-center gap-2 w-full justify-between hover:border-b">
                           <span> GO TO EQUB</span>
