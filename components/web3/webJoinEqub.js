@@ -10,7 +10,6 @@ const WebJoinEqub = (EQUB_ADDRES, refetch) => {
   const { address, setLoader, setOpenModal, setToastNotifcation } =
     useContext(EqubContext);
 
-  console.log({ EQUB_ADDRES })
   const equbFactoryInterface = new ethers.utils.Interface(equbInfo);
 
   const equbAddressContract = new Contract(EQUB_ADDRES, equbFactoryInterface);
@@ -24,7 +23,6 @@ const WebJoinEqub = (EQUB_ADDRES, refetch) => {
   const doRefetch = async () => {
     try {
       for (const refetchFn of refetch) {
-        console.log("inside refetch ->", refetchFn)
         await refetchFn();
       }
     } catch (error) {
@@ -33,16 +31,10 @@ const WebJoinEqub = (EQUB_ADDRES, refetch) => {
   };
 
   useEffect(() => {
-    console.log("check joinEqubStatus first ->", joinEqubStatus)
-    console.log("check errorHash ->", joinEqubStatus)
     let errorCheck = joinEqubStatus?.errorHash?.data
-    console.log("errorCheck ->", errorCheck)
     if (errorCheck) {
-      console.log("inside errorCheck here")
       const { name: decodedError } = equbFactoryInterface.parseError(errorCheck)
-      console.log("decodedError ->", decodedError)
       const msgErr = handleMsgError(decodedError)
-      console.log("msgErr ->", msgErr)
       setToastNotifcation({ title: "Error", desc: `${msgErr}`, status: "error" });
       setOpenModal(false);
     }

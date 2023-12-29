@@ -9,9 +9,6 @@ import handleMsgError from "../helper/errorMsg";
 const WebContributeEqub = (EQUB_ADDRES, refetch) => {
     const { setLoader, setOpenModal, setToastNotifcation } =
         useContext(EqubContext);
-
-
-    console.log({ EQUB_ADDRES })
     const equbFactoryInterface = new ethers.utils.Interface(equbInfo);
 
     const equbAddressContract = new Contract(EQUB_ADDRES, equbFactoryInterface);
@@ -34,11 +31,8 @@ const WebContributeEqub = (EQUB_ADDRES, refetch) => {
     useEffect(() => {
         let errorCheck = contributeEqubStatus?.errorHash?.data
         if (errorCheck) {
-            console.log("inside errorCheck here")
             const { name: decodedError } = equbFactoryInterface.parseError(errorCheck)
-            console.log("decodedError ->", decodedError)
             const msgErr = handleMsgError(decodedError)
-            console.log("msgErr ->", msgErr)
             setToastNotifcation({ title: "Error", desc: `${msgErr}`, status: "error" });
             setOpenModal(false);
         }

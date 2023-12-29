@@ -23,12 +23,10 @@ const Index = () => {
       </div>
     );
 
-  console.log("equbInfoQuery ->", equbInfoQuery)
   const { equbs: equbsInfo } = equbInfoQuery
   const cycleId = equbsInfo[0]?.currentWeekOrMonth
 
 
-  console.log("cycleId ->", cycleId)
   return (
     <Equb equbAddress={EqubParam} cycleId={cycleId} />
   )

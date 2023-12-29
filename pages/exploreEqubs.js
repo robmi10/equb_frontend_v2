@@ -92,8 +92,6 @@ const ExploreEqubs = () => {
     return acc;
   }, []);
 
-  console.log("filteredEqubs ->", filteredEqubs)
-
   const searchList = filteredEqubs.filter(
     (option) =>
       option.totalMembers.includes(searchFilter) ||

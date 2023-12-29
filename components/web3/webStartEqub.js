@@ -28,7 +28,6 @@ const WebStartEqub = (EQUB_ADDRES, refetch) => {
       setLoader(false);
       setOpenModal(false);
       let owner = startEqubEvents[0].args._owner
-      console.log("startEqubEvents[0].args ->", startEqubEvents[0].args)
       setToastNotifcation({ title: "Equb", desc: `Equb has been started by ${owner?.toString()?.substr(0, 15)}`, status: "success" });
       refetch();
     }

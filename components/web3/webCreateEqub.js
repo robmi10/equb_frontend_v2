@@ -28,25 +28,20 @@ const WebCreateEqub = (refetch) => {
   useEffect(() => {
     if (createEqubStatus.status === "Mining" && !loader) {
       setLoader(true);
-      console.log("inside MINING");
     }
     if (createEqubStatus.status === "Error" && !toastNotification) {
       setToastNotifcation({ title: "Equb", desc: "Equb created", status: "error" });
-      console.log("inside error status")
     }
     if (createEqubStatus.status === "Success" && !toastNotification) {
       let equbAddress = createEqubEvents[0].args.equbAddress
       setLoader(false);
       setOpenModal(false);
       setToastNotifcation({ title: "Equb", desc: `Equb ${equbAddress?.toString()?.substr(0, 15)} is created`, status: "success" });
-      console.log(" toastNotification ->", toastNotification)
       refetch()
-      console.log("inside SUCCESS");
     }
   });
 
   const useCreateEqubExecute = async (formInput) => {
-    console.log({ formInput });
     const {
       totalMembers,
       length,
@@ -64,7 +59,6 @@ const WebCreateEqub = (refetch) => {
     let equbEndTimestamp;
     let equbCycleDeadline;
 
-    console.log("durationType ->", durationType)
     let _collateral = Web3.utils.toWei(collateral, "ether");
     let _amount = Web3.utils.toWei(amount, "ether");
 

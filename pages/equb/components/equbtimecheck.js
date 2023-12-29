@@ -9,7 +9,6 @@ const useDeadlineStatus = (deadline, refetch) => {
     const doRefetch = async () => {
         try {
 
-            console.log("inside refetches!", refetch)
             for (const refetchFn of refetch) {
                 await refetchFn();
             }
@@ -22,8 +21,6 @@ const useDeadlineStatus = (deadline, refetch) => {
         const check = () => {
             const currentTime = Date.now();
             const deadlinePassed = currentTime > deadline * 1000;
-
-            console.log("inside check ->", deadlinePassed)
 
             if (deadlinePassed && !hasRefetched) {
                 doRefetch()
@@ -44,10 +41,7 @@ const useDeadlineStatus = (deadline, refetch) => {
 
 export const EqubCycleItem = ({ ...props }) => {
     const { time, refetch, check, hide } = props
-    console.log("props ->", props)
     const isPassed = useDeadlineStatus(time, refetch);
-
-    console.log("time", time)
 
     return (
         <div>

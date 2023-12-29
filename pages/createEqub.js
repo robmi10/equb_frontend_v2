@@ -96,7 +96,6 @@ const ModalCreateEqub = ({ setOpenModal, refetch }) => {
       ...prevData,
       [name]: value,
     }));
-    console.log("formInput ->", formInput)
   };
 
   return (
@@ -268,8 +267,6 @@ const CreateEqub = () => {
   });
 
   if (myActiveEqubsQueryError) return <> <p> Error...</p></>
-
-  console.log("inside create toastNotification ->", toastNotification)
 
   if (myActiveEqubsQueryLoading)
     return (

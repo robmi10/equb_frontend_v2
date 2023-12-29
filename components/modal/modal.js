@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { EqubContext } from "../context/context";
 
 const Modal = ({ children }) => {
-  const { openModal, setOpenModal } = useContext(EqubContext);
+  const { openModal } = useContext(EqubContext);
   if (!openModal) {
     return null;
   }

@@ -29,16 +29,10 @@ const WebJoinEqubCycle = (EQUB_ADDRES, refetch) => {
     };
 
     useEffect(() => {
-        console.log("check joinEqubCycleStatus first ->", joinEqubCycleStatus)
-        console.log("check errorHash ->", joinEqubCycleStatus)
         let errorCheck = joinEqubCycleStatus?.errorHash?.data
-        console.log("errorCheck ->", errorCheck)
         if (errorCheck) {
-            console.log("inside errorCheck here")
             const { name: decodedError } = equbFactoryInterface.parseError(errorCheck)
-            console.log("decodedError ->", decodedError)
             const msgErr = handleMsgError(decodedError)
-            console.log("msgErr ->", msgErr)
             setToastNotifcation({ title: "Error", desc: `${msgErr}`, status: "error" });
             setOpenModal(false);
         }

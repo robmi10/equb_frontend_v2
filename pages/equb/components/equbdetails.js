@@ -131,12 +131,6 @@ const Equb = ({ ...props }) => {
         variables: { equb: equbAddress },
     });
 
-    const runRefetches = async () => {
-        for (const refetchFn of [refetchEqubDetailsQuery, refetchEqubCycleQuery, refetchEqubMembersQuery]) {
-            console.log("inside run refetches")
-            await refetchFn();
-        }
-    }
 
     if (equbCycleError || equbMembersQueryError || equbDetailsQueryError) return <> <p> Error...</p></>
     if (equbQueryDetailsIsLoading || equbCycleIsLoading || equbMembersIsLoading)
@@ -151,14 +145,6 @@ const Equb = ({ ...props }) => {
     const { playerRewardeds: playerRewardedsList } = equbMembersQuery
     const equbInfo = equbsDetail[0]
     const { allCycleEnded, equbEnded } = equbInfo
-
-    console.log("equbInfo check ->", allCycleEnded)
-
-    console.log("equbEnded check ->", equbEnded)
-
-    console.log("playerRewardedsList ->", playerRewardedsList)
-    console.log("equbsCycle ->", equbsCycle)
-
     const handleEndEqub = (option) => {
         setOpenModal(true);
         setModalContent(
