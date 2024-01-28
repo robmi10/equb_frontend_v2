@@ -29,7 +29,7 @@ export default function Layout({ children }) {
           </div>
         )}
         {!account && <div className="h-screen w-screen flex justify-center items-center">
-          <h1 className="text-2xl font-bold">CONNECT YOUR WALLET</h1>
+          <h1 className="animate-fadeSmooth text-2xl font-bold">CONNECT YOUR WALLET</h1>
         </div>}
         <div className="mt-48 md:mt-0">
           <Footer />

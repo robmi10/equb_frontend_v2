@@ -145,6 +145,9 @@ const Equb = ({ ...props }) => {
     const { playerRewardeds: playerRewardedsList } = equbMembersQuery
     const equbInfo = equbsDetail[0]
     const { allCycleEnded, equbEnded } = equbInfo
+
+    console.log("equbEnded ->", equbEnded)
+    console.log("check equbInfo ->", equbInfo)
     const handleEndEqub = (option) => {
         setOpenModal(true);
         setModalContent(
@@ -178,7 +181,7 @@ const Equb = ({ ...props }) => {
     const playerRewardsAndPenaltiesList = Object.values(playerRewardsAndPenalties);
     return (
         <>
-            <div className="h-full  w-full flex justify-center">
+            <div className="animate-fadeIn h-full w-full flex justify-center">
                 <div className="md:w-3/4 h-full flex flex-col space-y-10 p-10">
                     <span className="text-4xl font-semibold"> Equb Details</span>
                     <span className="text-3xl font-medium">A dedicated space to view and manage your Equb details</span>
@@ -330,7 +333,8 @@ const Equb = ({ ...props }) => {
                                                         </label>
                                                         <EqubCycleItem refetch={[refetchEqubCycleQuery, refetchEqubDetailsQuery, refetchEqubMembersQuery]} time={option.startTimeStamp} check={true} />
                                                     </div>
-                                                    {!option.participants.length > 0 && <div className="flex pt-1 justify-start">
+
+                                                    {!option.participants.length > 0 && !equbEnded && <div className="flex pt-1 justify-start">
                                                         <button className="border pt-2 border-black hover:bg-slate-100 w-full h-12 p-2 flex items-center justify-center"
                                                             onClick={() => { handleJoinEqub(equbInfo) }}
                                                         >

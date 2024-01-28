@@ -20,7 +20,7 @@ const ModalContent = ({ setOpenModal, props, refetch }) => {
   };
 
   return (
-    <div className="bg-white md:w-5/12 h-4/12 flex justify-center p-11 mt-4 rounded-md flex-col gap-4">
+    <div className="animate-fadeSmooth bg-white md:w-5/12 h-4/12 flex justify-center p-11 mt-4 rounded-md flex-col gap-4">
       <button onClick={() => setOpenModal(false)}>
         <AiOutlineClose />
       </button>
@@ -122,7 +122,7 @@ const ExploreEqubs = () => {
   }
 
   return (
-    <div className="h-full w-full flex justify-center">
+    <div className="animate-fadeIn h-full w-full flex justify-center">
       <div className="md:w-3/4 h-full flex flex-col space-y-10 p-10 ">
         <div className="flex flex-col space-y-5 md:w-3/4  mb-12 ">
           <span className="font-bold text-4xl">Explore Equbs</span>
@@ -163,7 +163,7 @@ const ExploreEqubs = () => {
                 <div className="gap-8">
                   {option.equbStarted && (
                     <div key={index}>
-                      <div className="w-full gap-4 justify-between flex flex-col md:flex-row md:items-center border p-5 rounded-md">
+                      <div className="animate-fadeSmooth w-full gap-4 justify-between flex flex-col md:flex-row md:items-center border p-5 rounded-md">
                         <div className="flex flex-col gap-2">
                           <span className="w-36 font-bold  ">Equb Address</span>
 

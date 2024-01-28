@@ -30,7 +30,10 @@ const WebEndEqub = (EQUB_ADDRES, refetch) => {
 
     useEffect(() => {
         let errorCheck = endEqubStatus?.errorHash?.data
+        console.log("errorCheck ->", errorCheck)
         if (errorCheck) {
+            console.log("endEqubStatus ->", endEqubStatus)
+            console.log("equbFactoryInterface ->", equbFactoryInterface)
             const { name: decodedError } = equbFactoryInterface.parseError(errorCheck)
             const msgErr = handleMsgError(decodedError)
             setToastNotifcation({ title: "Error", desc: `${msgErr}`, status: "error" });
@@ -42,12 +45,12 @@ const WebEndEqub = (EQUB_ADDRES, refetch) => {
         }
         if (endEqubStatus.status === "Error") {
             setLoader(true);
-            setToastNotifcation({ title: "Error", desc: `${address} got error joining cycle`, status: "error" });
+            setToastNotifcation({ title: "Error", desc: `Equb failed to end`, status: "error" });
         }
         if (endEqubStatus.status === "Success") {
             setLoader(false);
             setOpenModal(false);
-            setToastNotifcation({ title: "Equb", desc: `${address} joined cycle`, status: "success" });
+            setToastNotifcation({ title: "Equb", desc: `Equb succesfully ended `, status: "success" });
             doRefetch()
         }
     });

@@ -290,7 +290,7 @@ const CreateEqub = () => {
   };
 
   return (
-    <div className="h-full w-full flex justify-center">
+    <div className="animate-fadeIn h-full w-full flex justify-center">
       <div className="md:w-3/4 h-full flex flex-col space-y-10 p-10">
         <span className="text-4xl font-bold md:text-5xl">Start Your Own Equb</span>
         <span className="font-medium text-2xl text-gray-400">

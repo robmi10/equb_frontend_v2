@@ -5,7 +5,7 @@ import img2 from "../img/img2.png"
 const Home = () => {
   return (
     <>
-      <div className="h-full w-full flex flex-col md:flex-col justify-center items-center mt-24">
+      <div className="animate-fadeIn h-full w-full flex flex-col md:flex-col justify-center items-center mt-24">
         <div className='flex gap-2 items-center flex-col md:flex-row'>
           <img className='rounded-md h-64' src={img1.src} />
           <div className='h-48 w-96 flex items-center justify-center text-4xl font-bold'>
@@ -13,7 +13,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className='flex gap-2 items-center flex-col md:flex-row'>
+        <div className='animate-fadeIn flex gap-2 items-center flex-col md:flex-row'>
           <div className='h-48 w-96 flex items-center justify-center text-4xl font-bold text-gray-300'>
             TOGETHER
           </div>

@@ -87,7 +87,7 @@ const MyEqubs = () => {
   const { equbs: joinedEqubList } = joinedEqubs
 
   return (
-    <div className="h-full w-full flex justify-center">
+    <div className="animate-fadeIn h-full w-full flex justify-center">
       <div className="md:w-3/4 h-full flex flex-col space-y-5 p-10">
         <div className='flex flex-col space-y-5 md:w-3/4  mb-12'>
 

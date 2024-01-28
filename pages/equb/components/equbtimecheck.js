@@ -43,15 +43,17 @@ export const EqubCycleItem = ({ ...props }) => {
     const { time, refetch, check, hide } = props
     const isPassed = useDeadlineStatus(time, refetch);
 
+    if (!isPassed) return false
+
     return (
         <div>
             {!check && <span>
                 {!isPassed && !check
-                    ? <Timer countDownTimeMs={Number(time)} hide={hide} />
+                    ? <Timer className="animate-fadeIn" countDownTimeMs={Number(time)} hide={hide} />
                     : "-"}
             </span>}
             {check && <span>
-                {isPassed ? <AiFillCheckCircle color='green' size={20} /> : <AiFillCloseCircle color='red' size={20} />}
+                {isPassed ? <AiFillCheckCircle className="animate-fadeIn" color='green' size={20} /> : <AiFillCloseCircle color='red' size={20} />}
             </span>}
         </div>
     );
