@@ -34,6 +34,7 @@ const WebCreateEqub = (refetch) => {
     }
     if (createEqubStatus.status === "Success" && !toastNotification) {
       let equbAddress = createEqubEvents[0].args.equbAddress
+      console.log("equbAddress ->", equbAddress)
       setLoader(false);
       setOpenModal(false);
       setToastNotifcation({ title: "Equb", desc: `Equb ${equbAddress?.toString()?.substr(0, 15)} is created`, status: "success" });
@@ -96,7 +97,10 @@ const WebCreateEqub = (refetch) => {
       vrfcoordinator,
       keyhash,
       Number(subscriptionid),
-      account
+      account,
+      {
+        gasLimit: 5000000
+      }
     );
   };
   return { useCreateEqubExecute };

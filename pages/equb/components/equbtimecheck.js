@@ -43,7 +43,7 @@ export const EqubCycleItem = ({ ...props }) => {
     const { time, refetch, check, hide } = props
     const isPassed = useDeadlineStatus(time, refetch);
 
-    if (!isPassed) return false
+    // if (!isPassed) return false
 
     return (
         <div>

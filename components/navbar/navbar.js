@@ -13,7 +13,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="hidden md:flex w-3/4 justify-between pl-10 flex h-16 border-black items-center ">
+      <div className="hidden md:flex w-3/4 justify-between pl-10 h-16 border-black items-center ">
         <Link className="w-32" href="/">
           <HiMiniUserGroup />
         </Link>
@@ -41,7 +41,7 @@ const Navbar = () => {
         setModal(true)
       }} />
       }
-      {modal && <div className="flex md:hidden flex-col w-full justify-between p-20 flex h-full border-black justify-center items-center fixed bg-white">
+      {modal && <div className="flex md:hidden flex-col w-full justify-between p-20 h-full border-black items-center z-50 fixed bg-white">
         <IoIosClose size={30} className='absolute top-4 right-4' onClick={() => {
           setModal(false)
         }} />

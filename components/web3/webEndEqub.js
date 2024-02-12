@@ -30,10 +30,7 @@ const WebEndEqub = (EQUB_ADDRES, refetch) => {
 
     useEffect(() => {
         let errorCheck = endEqubStatus?.errorHash?.data
-        console.log("errorCheck ->", errorCheck)
         if (errorCheck) {
-            console.log("endEqubStatus ->", endEqubStatus)
-            console.log("equbFactoryInterface ->", equbFactoryInterface)
             const { name: decodedError } = equbFactoryInterface.parseError(errorCheck)
             const msgErr = handleMsgError(decodedError)
             setToastNotifcation({ title: "Error", desc: `${msgErr}`, status: "error" });

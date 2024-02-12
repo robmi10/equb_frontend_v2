@@ -1,5 +1,5 @@
 import { EqubContext } from '@/components/context/context';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import WebJoinEqub from '@/components/web3/webJoinEqub';
 import { AiOutlineClose, AiOutlineArrowRight } from 'react-icons/ai';
 import { ethers } from 'ethers';
@@ -58,12 +58,12 @@ const ExploreEqubs = () => {
     useContext(EqubContext);
   const { account } = useEthers();
 
-  const { data: notMemberEqubs, loading: notMemberEqubsLoading, error: notMemberEqubsError, refetchNotMember } = useQuery(GET_MEMBER_EQUBS, {
-    variables: { member: account }
+  const { data: notMemberEqubs, loading: notMemberEqubsLoading, error: notMemberEqubsError, refetch: refetchNotMember } = useQuery(GET_MEMBER_EQUBS, {
+    variables: { member: account }, fetchPolicy: 'network-only'
   });
 
-  const { data: notOwnerEqubs, loading: notOwnerEqubsLoading, error: notOwnerEqubsError, refetchNotOwner } = useQuery(GET_NOT_OWNER_AND_MEMBER_EQUBS, {
-    variables: { member: account }
+  const { data: notOwnerEqubs, loading: notOwnerEqubsLoading, error: notOwnerEqubsError, refetch: refetchNotOwner } = useQuery(GET_NOT_OWNER_AND_MEMBER_EQUBS, {
+    variables: { member: account }, fetchPolicy: 'network-only'
   });
   notOwnerEqubs
   const [searchFilter, setSearchFilter] = useState('');

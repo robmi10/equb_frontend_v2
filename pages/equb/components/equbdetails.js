@@ -8,7 +8,6 @@ import { HiSignal } from 'react-icons/hi2';
 import { AiFillCheckCircle, AiFillCloseCircle } from 'react-icons/ai';
 import { ethers } from 'ethers';
 import WebJoinEqubCycle from '@/components/web3/webJoinEqubCycle';
-import Timer from '@/components/helper/timer/timer';
 import { useEthers } from '@usedapp/core';
 import WebEndEqub from '@/components/web3/webEndEqub';
 import { EqubCycleItem } from './equbtimecheck';
@@ -146,8 +145,6 @@ const Equb = ({ ...props }) => {
     const equbInfo = equbsDetail[0]
     const { allCycleEnded, equbEnded } = equbInfo
 
-    console.log("equbEnded ->", equbEnded)
-    console.log("check equbInfo ->", equbInfo)
     const handleEndEqub = (option) => {
         setOpenModal(true);
         setModalContent(
