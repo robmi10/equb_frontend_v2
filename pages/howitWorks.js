@@ -23,7 +23,7 @@ const HowItWorks = () => {
             <div className="md:w-3/4 h-full flex flex-col space-y-6 p-7">
                 <span className="text-2xl font-bold">Step 2: Create Your Equb</span>
                 <span>
-                    Click on 'Create Equb' to start setting up your savings circle.
+                    Click on Create Equb to start setting up your savings circle.
                 </span>
                 <span className="font-bold">Define Terms:</span>
                 <div>
@@ -97,12 +97,12 @@ const HowItWorks = () => {
                 <div className="flex gap-4 flex-col">
                     <div className="flex gap-1 flex-col">
                         <span className="font-bold">Random Winner Selection:</span>
-                        <span>At each cycle's end, Chainlink VRF selects a random winner.
+                        <span>At each cycles end, Chainlink VRF selects a random winner.
                         </span>
                     </div>
                     <div className="flex gap-1 flex-col">
                         <span className="font-bold">Distribution:</span>
-                        <span>The total contributions are automatically sent to the winner's wallet.</span>
+                        <span>The total contributions are automatically sent to the winners wallet.</span>
                     </div>
                     <div className="flex gap-1 flex-col">
                         <span className="font-bold">Continue the Cycle:</span>
@@ -123,7 +123,7 @@ const HowItWorks = () => {
                 <div className="flex gap-4 flex-col">
                     <div className="flex gap-1 flex-col">
                         <span className="font-bold">1. Random Winner Selection:</span>
-                        <span>At each cycle's end, Chainlink VRF selects a random winner.
+                        <span>At each cycles end, Chainlink VRF selects a random winner.
                         </span>
                     </div>
                     <div className="flex gap-1 flex-col">
@@ -143,7 +143,7 @@ const HowItWorks = () => {
                     </div>
                     <div className="flex gap-1 flex-col">
                         <span className="font-bold">5. Automate & Conclude:</span>
-                        <span>Let Chainlink handle the randomization and automation until the Equb's completion.
+                        <span>Let Chainlink handle the randomization and automation until the Equbs completion.
                         </span>
                     </div>
                 </div>
@@ -163,7 +163,7 @@ const HowItWorks = () => {
                     </div>
                     <div className="flex gap-1">
                         <span className="font-bold">Automation:</span>
-                        <span>Chainlink Automation manages the cycles, so you don't have to.</span>
+                        <span>Chainlink Automation manages the cycles, so you dont have to.</span>
                     </div>
                 </div>
             </div>

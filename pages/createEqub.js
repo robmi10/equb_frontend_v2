@@ -10,13 +10,13 @@ import { GET_MY_INACTIVATED_EQUBS } from "@/components/apollo";
 import { useQuery } from "@apollo/client";
 
 const ModalStartEqub = ({ setOpenModal, address, refetch }) => {
-  const { useStartEqub } = WebStartEqub(address, refetch);
+  const { startEqub } = WebStartEqub(address, refetch);
   const { loader } = useContext(EqubContext);
 
   const handleSubmit = async () => {
     event.preventDefault();
     try {
-      await useStartEqub();
+      await startEqub();
       setToaster(true)
     } catch (error) {
       console.error(error)
@@ -60,7 +60,7 @@ const ModalStartEqub = ({ setOpenModal, address, refetch }) => {
 const ModalCreateEqub = ({ setOpenModal, refetch }) => {
   const { loader } = useContext(EqubContext);
 
-  const { useCreateEqubExecute } = WebCreateEqub(refetch);
+  const { createEqub } = WebCreateEqub(refetch);
 
   const defaultFormValues = {
     totalMembers: "",
@@ -86,7 +86,7 @@ const ModalCreateEqub = ({ setOpenModal, refetch }) => {
 
   const handleSubmit = () => {
     event.preventDefault();
-    useCreateEqubExecute(formInput);
+    createEqub(formInput);
   };
 
   const handleChange = (event) => {
@@ -309,7 +309,7 @@ const CreateEqub = () => {
 
           {myActiveEqubList.map((option, index) => {
             return (
-              <div className="pt-6 pb-12">
+              <div className="pt-6 pb-12" key={index}>
                 {!option.equbStarted && <div key={index} className="w-full justify-between flex items-center border-b">
                   <span>
                     <HiOutlineStatusOnline />

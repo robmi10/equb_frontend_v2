@@ -55,9 +55,9 @@ const WebJoinEqubCycle = (EQUB_ADDRES, refetch) => {
         }
     });
 
-    const useJoinEqubCycle = async (amountInEther) => {
+    const joinEqubCycle = async (amountInEther) => {
         joinEqubCycleExecute({ value: amountInEther });
     };
-    return { useJoinEqubCycle };
+    return { joinEqubCycle };
 };
 export default WebJoinEqubCycle;

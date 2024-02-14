@@ -11,12 +11,12 @@ import Timer from '@/components/helper/timer/timer';
 
 const ModalContent = ({ setOpenModal, props, refetch }) => {
   const { collateralAmount, equbAddress } = props;
-  const { useJoinEqub } = WebJoinEqub(equbAddress, refetch);
+  const { joinEqub } = WebJoinEqub(equbAddress, refetch);
   const { loader } = useContext(EqubContext);
 
   const handleSubmit = () => {
     event.preventDefault();
-    useJoinEqub(collateralAmount);
+    joinEqub(collateralAmount);
   };
 
   return (
@@ -130,8 +130,8 @@ const ExploreEqubs = () => {
             Discover various Equbs tailored to different preferences and needs.
           </span>
           <span className=" font-medium text-2xl text-gray-400">
-            Whether you're looking for a small group, large pools, short cycles,
-            or specific themes, you'll find an Equb that fits.
+            Whether youre looking for a small group, large pools, short cycles,
+            or specific themes, you will find an Equb that fits.
           </span>
         </div>
         {searchList.length > 0 && (
@@ -160,7 +160,7 @@ const ExploreEqubs = () => {
           <div>
             {searchList.map((option, index) => {
               return (
-                <div className="gap-8">
+                <div className="gap-8" key={index}>
                   {option.equbStarted && (
                     <div key={index}>
                       <div className="animate-fadeSmooth w-full gap-4 justify-between flex flex-col md:flex-row md:items-center border p-5 rounded-md">

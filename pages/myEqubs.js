@@ -12,12 +12,12 @@ import WebJoinEqub from '@/components/web3/webJoinEqub';
 
 const ModalJoinEqub = ({ setOpenModal, props, refetch }) => {
   const { collateralAmount, equbAddress } = props
-  const { useJoinEqub } = WebJoinEqub(equbAddress, refetch);
+  const { joinEqub } = WebJoinEqub(equbAddress, refetch);
   const { loader } = useContext(EqubContext);
 
-  const handleSubmit = () => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    useJoinEqub(collateralAmount);
+    await joinEqub(collateralAmount);
   };
 
   return (
@@ -60,12 +60,15 @@ const MyEqubs = () => {
   const { account } = useEthers();
 
 
-  if (!account) return false
+  const shouldSkip = !account; // Determine based on your logic
+
   const { data: myEqubs, loading: myEqubsLoading, error: myEqubsError, refetch: refetchEqubQuery } = useQuery(GET_OWNER_EQUBS, {
-    variables: { owner: account }, fetchPolicy: 'network-only',
+    variables: { owner: account }, fetchPolicy: 'network-only', skip: shouldSkip,
+
   });
   const { data: joinedEqubs, loading: joinedEqubsLoading, error: joinedEqubsError, refetch: refetchJoinedEqubQuery } = useQuery(GET_JOINED_EQUBS, {
-    variables: { member: account }, fetchPolicy: 'network-only',
+    variables: { member: account }, fetchPolicy: 'network-only', skip: shouldSkip,
+
   });
 
   if (myEqubsError || joinedEqubsError) return <> <p> Error...</p></>
@@ -94,12 +97,12 @@ const MyEqubs = () => {
           <span className="font-bold text-4xl">MyEqub Dashboard</span>
           <span className="font-medium text-3xl">
             Welcome to your personal equb dashboard.</span>
-          <span className="font-medium text-2xl text-gray-400">Here you can monitor and manage the equbs you own and see the ones you've joined.</span>
+          <span className="font-medium text-2xl text-gray-400">Here you can monitor and manage the equbs you own and see the ones you have joined.</span>
         </div>
 
         {(!myEqubList.length > 0 && !joinedEqubList.length > 0) && (
           <div className='h-96 flex  font-medium text-3xl '>
-            <h1>You currently haven't joined or created any Equbs</h1>
+            <h1>You currently haven not joined or created any Equbs</h1>
           </div>
         )}
 
@@ -107,7 +110,7 @@ const MyEqubs = () => {
         {myEqubList.length > 0 && <div className="border rounded-md p-8">
           {myEqubList.map((option, index) => {
             return (
-              <div>
+              <div key={index}>
                 {
                   <div key={index}>
                     <div className='w-full justify-between md:h-14 flex flex-col md:flex-row md:items-center p-12 border gap-4'>
@@ -179,11 +182,11 @@ const MyEqubs = () => {
           })}
         </div>}
 
-        {joinedEqubList.length > 0 && <span className="text-xl">Equbs I've Joined</span>}
+        {joinedEqubList.length > 0 && <span className="text-xl">Equbs Ive Joined</span>}
         {joinedEqubList.length > 0 && <div className="border rounded-md p-8">
           {joinedEqubList.map((option, index) => {
             return (
-              <div>
+              <div key={index}>
                 {
                   <div key={index}>
                     <div className='w-full justify-between md:h-14 flex flex-col md:flex-row md:items-center p-12 border gap-4'>

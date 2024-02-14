@@ -52,9 +52,9 @@ const WebEndEqub = (EQUB_ADDRES, refetch) => {
         }
     });
 
-    const useEndEqub = async () => {
+    const endEqub = async () => {
         endEqubExecute();
     };
-    return { useEndEqub };
+    return { endEqub };
 };
 export default WebEndEqub;

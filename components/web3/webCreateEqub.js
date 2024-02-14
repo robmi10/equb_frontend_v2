@@ -42,7 +42,7 @@ const WebCreateEqub = (refetch) => {
     }
   });
 
-  const useCreateEqubExecute = async (formInput) => {
+  const createEqub = async (formInput) => {
     const {
       totalMembers,
       length,
@@ -103,6 +103,6 @@ const WebCreateEqub = (refetch) => {
       }
     );
   };
-  return { useCreateEqubExecute };
+  return { createEqub };
 };
 export default WebCreateEqub;

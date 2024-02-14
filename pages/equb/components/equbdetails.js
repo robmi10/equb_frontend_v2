@@ -14,14 +14,14 @@ import { EqubCycleItem } from './equbtimecheck';
 
 const ModalContentEndEqub = ({ setOpenModal, props, refetch }) => {
     const { equbAddress } = props
-    const { useEndEqub } = WebEndEqub(equbAddress, refetch);
+    const { endEqub } = WebEndEqub(equbAddress, refetch);
     const { loader } = useContext(EqubContext);
 
     const handleSubmit = async () => {
         event.preventDefault();
         try {
 
-            await useEndEqub();
+            await endEqub();
         } catch (error) {
             console.error("Error in executing functions", error);
         }
@@ -34,7 +34,7 @@ const ModalContentEndEqub = ({ setOpenModal, props, refetch }) => {
             </button>
             <div>
                 <div className="flex flex-col gap-1">
-                    <p >Are you sure you wan't to end the equb?</p>
+                    <p>Are you sure you want to end the equb?</p>
                 </div>
             </div>
             <div className="flex justify-between flex-col md:flex-row gap-4 md:gap-4">
@@ -63,14 +63,13 @@ const ModalContentEndEqub = ({ setOpenModal, props, refetch }) => {
 
 const ModalContentJoinEqub = ({ setOpenModal, props, refetch }) => {
     const { equbAddress, contributionAmount } = props
-    const { useJoinEqubCycle } = WebJoinEqubCycle(equbAddress, refetch);
+    const { joinEqubCycle } = WebJoinEqubCycle(equbAddress, refetch);
     const { loader } = useContext(EqubContext);
 
     const handleSubmit = async () => {
         event.preventDefault();
         try {
-
-            await useJoinEqubCycle(contributionAmount);
+            await joinEqubCycle(contributionAmount);
         } catch (error) {
             console.error("Error in executing functions", error);
         }
@@ -189,7 +188,7 @@ const Equb = ({ ...props }) => {
                             {<div >
                                 {equbsDetail.map((option, index) => {
                                     return (
-                                        <div className="gap-8">
+                                        <div className="gap-8" key={index}>
                                             {<div key={index}>
                                                 <div className='w-full justify-between flex flex-col gap-4'>
                                                     <div className="flex border p-2 justify-between">
@@ -231,7 +230,7 @@ const Equb = ({ ...props }) => {
                             {<div>
                                 {equbsCycle.map((option, index) => {
                                     return (
-                                        <div className="gap-8">
+                                        <div className="gap-8" key={index}>
                                             {<div key={index}>
                                                 <div className='w-full justify-between flex flex-col gap-4'>
                                                     <div className="flex border p-2 justify-between">
@@ -293,7 +292,7 @@ const Equb = ({ ...props }) => {
                             <div className="border rounded-md p-4 w-full mb-8 flex flex-col gap-4 mt-4">
                                 {equbsCycle.map((option, index) => {
                                     return (
-                                        <div className="gap-8">
+                                        <div className="gap-8" key={index}>
                                             {<div key={index}>
                                                 <div className='w-full justify-between flex flex-col md:flex-row'>
                                                     {<div className="gap-3 flex flex-col">
@@ -347,12 +346,12 @@ const Equb = ({ ...props }) => {
                             </div>
                         </div>}
 
-                        {playerRewardsAndPenaltiesList.length > 0 && <span className="text-2xl font-medium">MEMBER'S LIST</span>}
+                        {playerRewardsAndPenaltiesList.length > 0 && <span className="text-2xl font-medium">MEMBERS LIST</span>}
                         {playerRewardsAndPenaltiesList && playerRewardsAndPenaltiesList.length > 0 && <div >
                             <div className="border rounded-md p-4 w-full flex flex-col gap-4">
                                 {playerRewardsAndPenaltiesList.map((option, index) => {
                                     return (
-                                        <div className="gap-8">
+                                        <div className="gap-8" key={index}>
                                             {<div key={index}>
                                                 <div className='w-full justify-between flex flex-col md:flex-row md:items-center border p-4 gap-4 md:gap-0'>
 

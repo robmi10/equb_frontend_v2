@@ -33,9 +33,9 @@ const WebStartEqub = (EQUB_ADDRES, refetch) => {
     }
   });
 
-  const useStartEqub = async () => {
+  const startEqub = async () => {
     startEqubExecute();
   };
-  return { useStartEqub };
+  return { startEqub };
 };
 export default WebStartEqub;
