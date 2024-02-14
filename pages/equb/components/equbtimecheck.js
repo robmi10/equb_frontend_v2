@@ -8,22 +8,22 @@ const useDeadlineStatus = (deadline, refetch) => {
 
     const doRefetch = async () => {
         try {
-
             for (const refetchFn of refetch) {
                 await refetchFn();
             }
-            setHasRefetched(true)
+            setHasRefetched(true);
         } catch (error) {
             console.error("Error during refetch:", error);
         }
     };
+
     useEffect(() => {
         const check = () => {
             const currentTime = Date.now();
             const deadlinePassed = currentTime > deadline * 1000;
 
             if (deadlinePassed && !hasRefetched) {
-                doRefetch()
+                doRefetch();
             }
             setIsPassed(deadlinePassed);
         };
@@ -38,23 +38,25 @@ const useDeadlineStatus = (deadline, refetch) => {
     return isPassed;
 };
 
-
-export const EqubCycleItem = ({ ...props }) => {
-    const { time, refetch, check, hide } = props
+// Define the component with a named function
+function EqubCycleItem(props) {
+    const { time, refetch, check, hide } = props;
     const isPassed = useDeadlineStatus(time, refetch);
-
-    // if (!isPassed) return false
 
     return (
         <div>
             {!check && <span>
-                {!isPassed && !check
-                    ? <Timer className="animate-fadeIn" countDownTimeMs={Number(time)} hide={hide} />
-                    : "-"}
+                {!isPassed && !check ? <Timer className="animate-fadeIn" countDownTimeMs={Number(time)} hide={hide} /> : "-"}
             </span>}
             {check && <span>
                 {isPassed ? <AiFillCheckCircle className="animate-fadeIn" color='green' size={20} /> : <AiFillCloseCircle color='red' size={20} />}
             </span>}
         </div>
     );
-};
+}
+
+// Explicitly set the display name if needed
+EqubCycleItem.displayName = "EqubCycleItem";
+
+// Export the component
+export default EqubCycleItem;

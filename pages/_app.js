@@ -5,7 +5,7 @@ import Navbar from "../components/navbar/navbar";
 import Layout from "../components/layout/layout";
 import { ChakraProvider } from "@chakra-ui/react";
 import { ApolloProvider } from '@apollo/client';
-import { client } from "./apollo-client";
+import { client } from "../utils/apollo-client";
 import { Footer } from "@/components/footer/footer";
 
 const config = {

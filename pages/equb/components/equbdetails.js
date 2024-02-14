@@ -10,7 +10,7 @@ import { ethers } from 'ethers';
 import WebJoinEqubCycle from '@/components/web3/webJoinEqubCycle';
 import { useEthers } from '@usedapp/core';
 import WebEndEqub from '@/components/web3/webEndEqub';
-import { EqubCycleItem } from './equbtimecheck';
+import EqubCycleItem from './equbtimecheck';
 
 const ModalContentEndEqub = ({ setOpenModal, props, refetch }) => {
     const { equbAddress } = props
